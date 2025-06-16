@@ -1,9 +1,11 @@
+import { Database } from "../models";
 
 
 class UserService {
 
-    constructor(dbInst : any){
+    constructor(dbInst : Database){
         console.log("UserService initialized");
+        console.log(dbInst.User);
     }
 
     getUsers() {

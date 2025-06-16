@@ -1,7 +1,7 @@
 
 import { Express } from 'express';
-import { container } from '../injection/container';
+import Container from '../injection/container';
 
-module.exports = (app : Express) => {
-    require('./user.routes')(app);
+module.exports = (app : Express, container : Container) => {
+    require('./user.routes')(app, container);
 }
