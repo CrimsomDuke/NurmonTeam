@@ -1,8 +1,9 @@
 import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { UserDTO, UserRegisterDTO } from "./dtos/user.types";
 
 
 @Table
-export class User extends Model<User>{
+export class User extends Model<UserDTO, UserRegisterDTO>{
     
     @PrimaryKey
     @AutoIncrement

@@ -1,3 +1,5 @@
+import { Request, RequestHandler, Response } from "express";
+import { UserRegisterDTO } from "../models/dtos/user.types";
 import { UserService } from "../services/user.service";
 
 class UserController{
@@ -9,9 +11,98 @@ class UserController{
         this.userService = userService;
     }
 
-    getUsers() {
-        return [this.userService.getUsers()];
+    registerUser : RequestHandler = async (req: Request, res : Response) => {
+        try {
+            const userData = req.body;
+
+            if (!userData.username || !userData.password || !userData.email) {
+                res.status(400).json({ error: "Username, password, and email are required" });
+                return;
+            }
+
+            console.log("Registering user with data:", userData);
+            const existingUser = await this.userService.getUserByRegisterDto(userData);
+            if(existingUser){
+                res.status(400).json({ error: "Username or email already exists" });
+                console.log("lLega aca");
+                return;
+            }
+
+            const token = await this.userService.registerUser(userData);
+            res.status(201).json(token);
+        } catch (err) {
+            console.error("Error registering user:", err);
+            res.status(500).json({ error: "Internal server error" });
+            return;
+        }
     }
+
+    loginUser : RequestHandler = async (req : Request, res : Response) => {
+        try {
+            const user = req.body;
+
+            if (!user.username || !user.password) {
+                res.status(400).json({ error: "Username and password are required" });
+                return;
+            }
+
+            const token = await this.userService.loginUser(user);
+            res.status(200).json(token);
+        } catch (err) {
+            console.error("Error logging in user:", err);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
+    getAllUsers = async (req : Request, res : Response) => {
+        try {
+            const users = await this.userService.getUsers();
+            res.status(200).json(users);
+        } catch (err) {
+            console.error("Error fetching users:", err);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
+    getUserById = async (req : Request, res : Response) => {
+        try {
+            const userId = parseInt(req.params.id);
+            const user = await this.userService.getUserById(userId);
+            if(!user){
+                res.status(404).json({ error: "User not found" });
+                return;
+            }
+
+            user.password = ''; // Remove password from response
+            res.status(200).json(user);
+        } catch (err) {
+            console.error("Error fetching user by ID:", err);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
+
+    getUserByToken = async (req : Request, res : Response) => {
+        try {
+            const token = req.params.token as string;
+            if(!token) {
+                res.status(400).json({ error: "Token is required" });
+                return;
+            }
+            const user = await this.userService.getUserByToken(token)
+            if (!user) {
+                res.status(404).json({ error: "User not found" });
+                return;
+            }
+
+            user.password = '';
+            res.status(200).json(user);
+        } catch (err) {
+            console.error("Error fetching user by token:", err);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
 }
 
 export { UserController };

@@ -1,6 +1,7 @@
 
 import { UserService } from "../services/user.service";
 import { Database } from "../models";
+import { TokenService } from "../services/token.service";
 
 class Container {
 
@@ -8,11 +9,13 @@ class Container {
 
     //services
     public readonly UserService : UserService;
+    public readonly TokenService : TokenService;
 
     private constructor(dbContext : Database) {
         console.log("Container initialized");
 
-        this.UserService = new UserService(dbContext);
+        this.TokenService = new TokenService();
+        this.UserService = new UserService(dbContext, this.TokenService);
     }
     
     public static getInstance(dbContext : Database): Container {
