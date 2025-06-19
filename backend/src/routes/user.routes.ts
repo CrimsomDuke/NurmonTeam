@@ -1,7 +1,6 @@
 import { Application } from 'express';
 import { Container } from '../injection/container';
 import { UserController } from '../controllers/user.controller';
-import { UserService } from '../services/user.service';
 
 module.exports = (app : Application, container : Container) => {
     const userController = new UserController(container.UserService);
