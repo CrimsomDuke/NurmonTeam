@@ -1,5 +1,5 @@
 import { Database } from "../models";
-import { UserRegisterDTO, UserPayload, UserLoginDTO } from "../models/dtos/user.types";
+import { UserRegisterDTO, UserPayload, UserLoginDTO, UserUpdateDTO } from "../models/dtos/user.types";
 import bcrypt from 'bcrypt';
 import { TokenService } from "./token.service";
 import { Op } from "sequelize";
@@ -14,7 +14,7 @@ class UserService {
         this.tokenService = tokenService;
     }
 
-    async getUsers() {
+    async getAllUsers() {
         const users = await this.db.User.findAll();
         users.forEach((user) => {
             // Remove password from user data
@@ -75,7 +75,8 @@ class UserService {
             const newUser = await this.db.User.create({
                 username: user.username,
                 password: hashedPassword,
-                email: user.email
+                email: user.email,
+                is_admin : user.is_admin || false
             });
             
             const payload: UserPayload = {
@@ -127,6 +128,31 @@ class UserService {
             return { token: token };
         }catch(err){
             console.error("Error logging in user:", err);
+            throw err;
+        }
+    }
+
+    async updateUser(userId : number, user : UserUpdateDTO){
+        try{
+            const existingUser = await this.db.User.findByPk(userId);
+            if (!existingUser) {
+                throw new Error("User not found");
+            }
+
+            if(user.password){
+                const newHashedPassword = await bcrypt.hash(user.password, 10);
+                existingUser.password = newHashedPassword;
+            }
+
+            if (user.is_admin !== undefined && user.is_admin !== null) {
+                existingUser.is_admin = user.is_admin;
+            }
+
+            await existingUser.save();
+
+            return existingUser;
+        }catch(err){
+            console.error("Error updating user:", err);
             throw err;
         }
     }

@@ -2,12 +2,15 @@ import express from 'express';
 
 import { db } from './models/';
 import { Container } from './injection/container';
+import fileUpload from 'express-fileupload';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
 
+app.use(express.json());
+app.use(fileUpload())
+app.use(express.urlencoded({ extended: true }));
 
 db.connect()
     .then(() => {

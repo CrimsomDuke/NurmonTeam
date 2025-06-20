@@ -1,4 +1,4 @@
-import { AutoIncrement, Column, DataType, HasMany, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { AutoIncrement, Column, DataType, Default, HasMany, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
 import { UserDTO, UserRegisterDTO } from "./dtos/user.types";
 import { Team } from "./team";
 
@@ -21,6 +21,10 @@ export class User extends Model<UserDTO, UserRegisterDTO>{
     @Unique
     @Column(DataType.STRING)
     email!: string;
+
+    @Default(false)
+    @Column(DataType.BOOLEAN)
+    is_admin!: boolean;
 
     @HasMany(() => Team)
     teams!: Team[];

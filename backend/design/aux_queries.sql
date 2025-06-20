@@ -38,5 +38,5 @@ FROM "Teams";
 SELECT id, "name", "createdAt", "updatedAt" 
 FROM "Types";
 
-SELECT id, username, "password", email, "createdAt", "updatedAt"
+SELECT id, username, "password", email, "createdAt", "updatedAt", "is_admin"
 FROM "Users";

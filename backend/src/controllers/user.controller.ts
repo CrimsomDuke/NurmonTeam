@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { UserRegisterDTO } from "../models/dtos/user.types";
+import { UserRegisterDTO, UserUpdateDTO } from "../models/dtos/user.types";
 import { UserService } from "../services/user.service";
 
 class UserController{
@@ -56,7 +56,7 @@ class UserController{
 
     getAllUsers = async (req : Request, res : Response) => {
         try {
-            const users = await this.userService.getUsers();
+            const users = await this.userService.getAllUsers();
             res.status(200).json(users);
         } catch (err) {
             console.error("Error fetching users:", err);
@@ -100,6 +100,36 @@ class UserController{
         } catch (err) {
             console.error("Error fetching user by token:", err);
             res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
+    updateUser = async (req : Request, res : Response) => {
+        const userId = parseInt(req.params.id);
+        if(!userId) {
+            res.status(400).json({ error: "User ID is required" });
+            return;
+        }
+
+        const userData = req.body as UserUpdateDTO;
+        if(!userData || !userData.password && !userData.is_admin){
+            res.status(400).json({ error: "Invalid user data" });
+            return;
+        }
+
+        try{
+            const updatedUser = await this.userService.updateUser(userId, userData);
+            if(!updatedUser){
+                res.status(404).json({ error: "User not found" });
+                return;
+            }
+
+            updatedUser.password = ''; // Remove password from response
+            res.status(200).json(updatedUser);
+            return;
+        }catch(err){
+            console.error("Error updating user:", err);
+            res.status(500).json({ error: "Internal server error" });
+            return;
         }
     }
 

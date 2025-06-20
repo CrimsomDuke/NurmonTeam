@@ -1,3 +1,4 @@
 /backend/node_modules
 /frontend/node_moduless
-/uploads
+/uploads/nurmon/*.jpg
+/uploads/item/*.jpg
