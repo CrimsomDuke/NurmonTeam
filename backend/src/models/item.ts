@@ -1,9 +1,9 @@
 import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { ItemDTO } from "./dtos/item.types";
+import { ItemCreateDTO, ItemDTO } from "./dtos/item.types";
 
 
 @Table
-export class Item extends Model<ItemDTO>{
+export class Item extends Model<ItemDTO, ItemCreateDTO>{
 
     @PrimaryKey
     @AutoIncrement
