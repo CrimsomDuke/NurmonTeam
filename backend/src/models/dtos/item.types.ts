@@ -12,3 +12,9 @@ export interface ItemCreateDTO {
     description: string;
     image_path : string;
 }
+
+export interface ItemUpdateDTO {
+    name? : string;
+    description? : string;
+    image_path? : string;
+}

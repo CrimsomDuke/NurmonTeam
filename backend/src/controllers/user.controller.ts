@@ -32,7 +32,7 @@ class UserController{
             res.status(201).json(token);
         } catch (err) {
             console.error("Error registering user:", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Error registering user", data : (err as Error).message });
             return;
         }
     }
@@ -50,7 +50,7 @@ class UserController{
             res.status(200).json(token);
         } catch (err) {
             console.error("Error logging in user:", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error", data : (err as Error).message });
         }
     }
 
@@ -128,7 +128,7 @@ class UserController{
             return;
         }catch(err){
             console.error("Error updating user:", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Error updating the user", data : (err as Error).message });
             return;
         }
     }

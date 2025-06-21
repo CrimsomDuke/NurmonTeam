@@ -60,8 +60,9 @@ class NurmonController{
 
             const nurmonData : NurmonCreateDTO = req.body;
 
-            if (!nurmonData.name || !nurmonData.type_id) {
-                res.status(400).json({ error: "Name and typeId are required" });
+            const errors = this.validateNurmonData(nurmonData);
+            if(errors){
+                res.status(400).json({ error: "Invalid Nurmon data", details: errors });
                 return;
             }
 
@@ -95,9 +96,9 @@ class NurmonController{
                 await theNurmon.save();
                 res.status(201).json(theNurmon);
             })
-        }catch(error){
-            console.error("Error creating Nurmon:", error);
-            res.status(500).json({ message: "Error while saving the nurmon", data : error });
+        }catch(err){
+            console.error("Error creating Nurmon:", err);
+            res.status(500).json({ message: "Error while saving the nurmon", data : (err as Error).message });
             return;
         }
     }
@@ -123,11 +124,6 @@ class NurmonController{
                 const file = req.files.image;
                 const imageFile = Array.isArray(file) ? file[0] : file as UploadedFile;
 
-                if (!nurmonData.name || !nurmonData.type_id) {
-                    res.status(400).json({ error: "Name and typeId are required" });
-                    return;
-                }
-
                 const uploadDir = global_vars.UPLOADS_FOLDER + "/nurmon";
                 const fileName = `${updatedNurmon.id}_.jpg`;
                 const filePath = path.join(uploadDir, fileName);
@@ -146,9 +142,9 @@ class NurmonController{
             }
 
             res.status(200).json(updatedNurmon);
-        } catch (error) {
-            console.error("Error updating Nurmon:", error);
-            res.status(500).json({ error: "Internal server error" });
+        } catch (err) {
+            console.error("Error updating Nurmon:", err);
+            res.status(500).json({ error: "Error updating the Nurmon", data : (err as Error).message });
             return;
         }
     }
@@ -159,11 +155,46 @@ class NurmonController{
         try {
             await this.nurmonService.deleteNurmon(id);
             res.status(200).json({ message: "Nurmon deleted successfully" });
-        } catch (error) {
-            console.error("Error deleting Nurmon:", error);
-            res.status(500).json({ error: "Internal server error" });
+        } catch (err) {
+            console.error("Error deleting Nurmon:", err);
+            res.status(500).json({ error: "Erro deleting the nurmon", data : (err as Error).message });
             return;
         }
+    }
+
+    private validateNurmonData(nurmonData : NurmonCreateDTO){
+        const errors : any =  {}
+
+        if(!nurmonData.name){
+            errors.name = "Nurmon name is required";
+        }
+        if(!nurmonData.hp){
+            errors.hp = "Nurmon HP is required";
+        }
+        if(!nurmonData.def){
+            errors.def = "Nurmon DEF is required";
+        }
+
+        if(!nurmonData.attack){
+            errors.attack = "Nurmon attack is required";
+        }
+
+        if(!nurmonData.special_attack){
+            errors.special_attack = "Nurmon special attack is required";
+        }
+
+        if(!nurmonData.special_def){
+            errors.special_def = "Nurmon special defense is required";
+        }
+        if(!nurmonData.speed){
+            errors.speed = "Nurmon speed is required";
+        }
+
+        if(Object.keys(errors).length > 0){
+            return errors;
+        }
+
+        return null;
     }
 }
 

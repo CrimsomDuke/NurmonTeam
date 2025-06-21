@@ -6,6 +6,10 @@ import { MiddlewareProvider } from "../middlewares/middleware.provider";
 import { NurmonService } from "../services/nurmon.service";
 import { MovementController } from "../controllers/movement.controller";
 import { MovementService } from "../services/movement.service";
+import ItemService from "../services/item.service";
+import NurmonMovementController from "../controllers/nurmon_movement.controller";
+import { Nurmon } from "../models/nurmon";
+import NurmonMovementService from "../services/nurmon_movement.service";
 
 class Container {
 
@@ -17,7 +21,8 @@ class Container {
     public readonly MiddlewareProvider : MiddlewareProvider;
     public readonly NurmonService : NurmonService;
     public readonly MovementService : MovementService;
-
+    public readonly ItemService : ItemService;
+    public readonly NurmonMovementService : NurmonMovementService
     private constructor(dbContext : Database) {
         console.log("Container initialized");
 
@@ -26,6 +31,8 @@ class Container {
         this.MiddlewareProvider = new MiddlewareProvider(this.UserService, this.TokenService);
         this.NurmonService = new NurmonService(dbContext);
         this.MovementService = new MovementService(dbContext);
+        this.ItemService = new ItemService(dbContext);
+        this.NurmonMovementService = new NurmonMovementService(dbContext);
     }
     
     public static getInstance(dbContext : Database): Container {

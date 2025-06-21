@@ -35,7 +35,7 @@ class MovementController {
             res.status(200).json(movement);
         } catch (error) {
             console.error("Error fetching movement by ID:", error);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Error retrieving data" });
         }
     }
 
@@ -53,9 +53,9 @@ class MovementController {
                 return;
             }
             res.status(200).json(movement);
-        } catch (error) {
-            console.error("Error fetching movement by name:", error);
-            res.status(500).json({ error: "Internal server error" });
+        } catch (err) {
+            console.error("Error fetching movement by name:", err);
+            res.status(500).json({ error: "Error fetching movement by name" });
         }
     }
 
@@ -78,9 +78,9 @@ class MovementController {
 
             const newMovement = await this.movementService.createMovement(movementData);
             res.status(201).json(newMovement);
-        } catch (error) {
-            console.error("Error creating movement:", error);
-            res.status(500).json({ error: "Internal server error" });
+        } catch (err) {
+            console.error("Error creating movement:", err);
+            res.status(500).json({ error: "Error creating the movement", data : (err as Error).message });
         }
     }
 
@@ -100,9 +100,9 @@ class MovementController {
                 return;
             }
             res.status(200).json(updatedMovement);
-        } catch (error) {
-            console.error("Error updating movement:", error);
-            res.status(500).json({ error: "Internal server error" });
+        } catch (err) {
+            console.error("Error updating movement:", err);
+            res.status(500).json({ error: "Error  updating the movement", data : (err as Error).message });
         }
     }
 
@@ -114,15 +114,11 @@ class MovementController {
         }
 
         try {
-            const deletedMovement = await this.movementService.deleteMovement(id);
-            if (!deletedMovement) {
-                res.status(404).json({ error: "Movement not found" });
-                return;
-            }
-            res.status(204).send({ message : "Movement deleted successfully" });
-        } catch (error) {
-            console.error("Error deleting movement:", error);
-            res.status(500).json({ error: "Internal server error" });
+            await this.movementService.deleteMovement(id);
+            res.status(201).send({ message : "Movement deleted successfully" });
+        } catch (err) {
+            console.error("Error deleting movement:", err);
+            res.status(500).json({ error: "Error deleting the movement", data : (err as Error).message });
         }
     }
 

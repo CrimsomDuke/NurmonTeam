@@ -1,10 +1,10 @@
 import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { NurmonMovementDTO } from "./dtos/nurmon_movement.types";
+import { NurmonMovementCreateDTO, NurmonMovementDTO } from "./dtos/nurmon_movement.types";
 import { Nurmon } from "./nurmon";
 import { Movement } from "./movement";
 
 @Table
-export class NurmonMovement extends Model<NurmonMovementDTO, NurmonMovementDTO>{
+export class NurmonMovement extends Model<NurmonMovementDTO, NurmonMovementCreateDTO>{
 
     @PrimaryKey
     @AutoIncrement
