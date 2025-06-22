@@ -37,13 +37,14 @@ class TeamService{
                 where: {
                     user_id: userId
                 },
-                include  : [
-                    {
-                        model : this.db.Nurmon,
-                        as    : 'nurmons',
-                        attributes : ['id', 'name', 'image_path']
-                    }
-                ]
+                include : {
+                    model : this.db.TeamMember,
+                    as: 'teamMembers',
+                    include: [{
+                        model: this.db.User,
+                        as: 'user'
+                    }]
+                }
             });
             if (!team) {
                 return null;

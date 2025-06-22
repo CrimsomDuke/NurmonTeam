@@ -1,7 +1,8 @@
-import { Model } from "sequelize-typescript";
+import { HasMany, Model } from "sequelize-typescript";
 import { TeamCreateDTO, TeamDTO } from "./dtos/team.types";
 import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, PrimaryKey, Table } from "sequelize-typescript";
 import { User } from "./user";
+import { TeamMember } from "./team_member";
 
 @Table
 export class Team extends Model<TeamDTO, TeamCreateDTO>{
@@ -19,4 +20,7 @@ export class Team extends Model<TeamDTO, TeamCreateDTO>{
 
     @BelongsTo(() => User)
     user! : User;
+
+    @HasMany(() => TeamMember)
+    teamMembers? : TeamMember[];
 }

@@ -11,27 +11,24 @@ export const useAuth = (shouldRedirect : boolean = true) => {
         throw new Error("useAuth must be used within an AppProvider");
     }
 
-    const { setUserInfo, removeUserInfo } = context;
+    const { user, setUserInfo, removeUserInfo } = context;
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [isUserAdmin, setIsUserAdmin] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
     useEffect(() => {
 
-        console.log("Esta auth", isAuthenticated)
-
-        if(!isAuthenticated && shouldRedirect){
+        if(!getToken() && shouldRedirect){
             console.log("USUARIO NO AUTENTICADO, REDIRIGIENDO A LOGIN")
             navigate("/auth/login");
         }else{
+            console.log(user);
             fetchUserInfo();
         }
     }, [isAuthenticated])
 
     const fetchUserInfo = async () => {
-        console.log("OBTENIENDO INFO DEL USUARIO")
         try{
             const response = await fetch(`${global_vars.API_URL}/users/me`, {
                 method : 'GET',
@@ -44,12 +41,6 @@ export const useAuth = (shouldRedirect : boolean = true) => {
             const data = await response.json();
             if(response.ok) {
                 setUserInfo(data);
-                console.log("USUARIO AUTENTICADO:", data);
-                if(data.is_admin){
-                    setIsUserAdmin(true);
-
-                    localStorage.setItem(global_vars.LOCAL_STORAGE_IS_USER_ADMIN, "true");
-                }
             } else {
                 console.error("Failed to fetch user info:", data.error);
                 removeUserInfo();
@@ -81,7 +72,7 @@ export const useAuth = (shouldRedirect : boolean = true) => {
     }
 
     const isCurrentUserAdmin = () => {
-        return localStorage.getItem(global_vars.LOCAL_STORAGE_IS_USER_ADMIN) == 'true';
+        return user?.is_admin;
     }
 
     return {
