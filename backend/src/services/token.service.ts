@@ -1,6 +1,7 @@
 
 import jwt from 'jsonwebtoken';
 import global_vars from '../config/global.config';
+import { UserPayload } from '../models/dtos/user.types';
 
 class TokenService{
 
@@ -8,7 +9,7 @@ class TokenService{
         console.log("TokenService initialized");
     }
 
-    public generateToken(payload : object) : string{
+    public generateToken(payload : UserPayload) : string{
         return jwt.sign(payload, global_vars.JWT_SECRET);
     }
 

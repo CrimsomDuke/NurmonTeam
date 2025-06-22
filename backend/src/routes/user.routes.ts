@@ -9,8 +9,8 @@ module.exports = (app : Application, container : Container, middlewareProvider :
     app.get('/api/users', middlewareProvider.authMiddleware, (req, res) => userController.getAllUsers(req, res));
     app.post('/api/users/register', userController.registerUser);
     app.post('/api/users/login', userController.loginUser);
+    app.get('/api/users/me',middlewareProvider.authMiddleware , userController.getMe);
 
     app.get('/api/users/:id', userController.getUserById);
-    app.get('/api/users/token/:token', userController.getUserByToken);
     app.put('/api/users/update/:id', middlewareProvider.isAdminMiddleware, userController.updateUser);
 }

@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { UserRegisterDTO, UserUpdateDTO } from "../models/dtos/user.types";
+import { UserDTO, UserRegisterDTO, UserUpdateDTO } from "../models/dtos/user.types";
 import { UserService } from "../services/user.service";
 
 class UserController{
@@ -82,24 +82,25 @@ class UserController{
     }
 
 
-    getUserByToken = async (req : Request, res : Response) => {
+    getMe = async (req : Request, res : Response) => {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            res.status(401).json({ error: "Token required" });
+            return;
+        }
+
         try {
-            const token = req.params.token as string;
-            if(!token) {
-                res.status(400).json({ error: "Token is required" });
-                return;
-            }
-            const user = await this.userService.getUserByToken(token)
+            const user  = await this.userService.getUserByToken(token);
             if (!user) {
-                res.status(404).json({ error: "User not found" });
+                res.status(401).json({ error: "Invalid token" });
                 return;
             }
 
-            user.password = '';
+            user.password = ''; // Remove password from response
             res.status(200).json(user);
         } catch (err) {
             console.error("Error fetching user by token:", err);
-            res.status(500).json({ error: "Internal server error" });
+            res.status(500).json({ error: "Internal server error", data : (err as Error).message });
         }
     }
 

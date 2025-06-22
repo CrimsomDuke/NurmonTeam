@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import cors from 'cors';
 
 import { db } from './models/';
 import { Container } from './injection/container';
@@ -11,6 +13,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+
+let corsOptiosn = {
+    origin : ['http://localhost:5173', 'http://127.0.0.1:5173'],
+}
+
+app.use(cors(corsOptiosn));
 
 db.connect()
     .then(() => {

@@ -6,10 +6,10 @@ export interface AppContextType {
 }
 
 export interface UserDataDTO {
-    id: string;
-    name: string;
+    id: number;
+    username: string;
     email: string;
-    is_admin : string;
+    is_admin : boolean;
     createdAt: Date;
     updatedAt: Date;
 }

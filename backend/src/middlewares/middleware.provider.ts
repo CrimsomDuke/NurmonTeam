@@ -14,6 +14,9 @@ export class MiddlewareProvider {
     }
 
     public authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+
+        console.log("Auth middleware called");
+
         const token = req.headers.authorization?.split(' ')[1];
         if (!token) {
             res.status(401).json({ error: "Token required" });
@@ -21,8 +24,12 @@ export class MiddlewareProvider {
         }
 
         try {
+
+            console.log("Verifying token:", token);
+
             const user = await this.tokenService.verifyToken(token);
-            if (!user) {
+            console.log("User from token:", user);
+            if (!user || isNaN(user.id)) {
                 res.status(401).json({ error: "Invalid token" });
                 return;
             }

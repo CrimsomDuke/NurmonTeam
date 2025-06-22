@@ -35,17 +35,20 @@ class UserService {
     }
 
     async getUserByToken(token : string){
-        try {
-            const payload = await this.tokenService.verifyToken(token);
-            if (!payload) {
-                return null;
-            }
-            const user = await this.getUserById(payload.id);
-            return user;
-        } catch (err) {
-            console.error("Error verifying token:", err);
-            throw err;
+    
+        const user = await this.tokenService.verifyToken(token);
+        if (!user || isNaN(user.id)) {
+            return null;
         }
+
+        const userData = await this.db.User.findByPk(user.id);
+        if (!userData) {
+            return null;
+        }
+
+        // Remove password from user data
+        userData.password = '';
+        return userData;
     }
 
     async getUserByRegisterDto(data : UserRegisterDTO){
@@ -82,7 +85,8 @@ class UserService {
             const payload: UserPayload = {
                 id: newUser.id,
                 username: newUser.username,
-                email: newUser.email
+                email: newUser.email,
+                is_admin: newUser.is_admin
             }
 
             const token = await this.tokenService.generateToken(payload)
@@ -117,7 +121,8 @@ class UserService {
             const payload: UserPayload = {
                 id: existingUser.id,
                 username: existingUser.username,
-                email: existingUser.email
+                email: existingUser.email,
+                is_admin: existingUser.is_admin
             }
 
             const token = await this.tokenService.generateToken(payload);

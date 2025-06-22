@@ -26,6 +26,7 @@ export interface UserPayload {
     id : number;
     username : string;
     email : string;
+    is_admin : boolean;
 }
 
 export interface UserUpdateDTO {
