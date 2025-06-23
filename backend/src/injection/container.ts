@@ -13,6 +13,8 @@ import NurmonMovementService from "../services/nurmon_movement.service";
 import TeamService from "../services/team.service";
 import TypeService from "../services/type.service";
 import AbilityService from "../services/ability.service";
+import NatureService from "../services/nature.service";
+import TeamMemberService from "../services/team_member.service";
 
 class Container {
 
@@ -29,6 +31,8 @@ class Container {
     public readonly TeamService : TeamService;
     public readonly TypeService : TypeService;
     public readonly AbilityService : AbilityService
+    public readonly NatureService : NatureService;
+    public readonly TeamMemberService : TeamMemberService;
 
     private constructor(dbContext : Database) {
         console.log("Container initialized");
@@ -43,6 +47,8 @@ class Container {
         this.TeamService = new TeamService(dbContext);
         this.TypeService = new TypeService(dbContext);
         this.AbilityService = new AbilityService(dbContext);
+        this.NatureService = new NatureService(dbContext);
+        this.TeamMemberService = new TeamMemberService(dbContext);
 
     }
     

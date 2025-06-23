@@ -12,7 +12,7 @@ SELECT id, "name", is_physical, power, type_id, "createdAt",
 	"updatedAt" 
 FROM "Movements";
 
-SELECT id, buff_stat, nerf_stat, hp_multiplier,
+SELECT id, "name", buff_stat, nerf_stat, hp_multiplier,
 	def_multiplier, attack_multiplier, special_attack_multiplier, 
 	special_def_multiplier, speed_multiplier, "createdAt", "updatedAt" 
 FROM "Nature";

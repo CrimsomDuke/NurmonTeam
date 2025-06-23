@@ -1,6 +1,6 @@
 import { AllowNull, AutoIncrement, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, HasOne, Max, Min, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { TeamCreateDTO } from "./dtos/team.types";
-import { TeamMemberDTO } from "./dtos/team_member.types";
+import { TeamMemberCreateDTO, TeamMemberDTO } from "./dtos/team_member.types";
 import { MemberNurmonMovement } from "./member_nurmon_movement";
 import { Ability } from "./ability";
 import { Item } from "./item";
@@ -10,7 +10,7 @@ import { Nurmon } from "./nurmon";
 
 
 @Table
-export class TeamMember extends Model<TeamMemberDTO, TeamCreateDTO>{
+export class TeamMember extends Model<TeamMemberDTO, TeamMemberCreateDTO>{
 
     @PrimaryKey
     @AutoIncrement

@@ -11,6 +11,9 @@ export class Nature extends Model<NatureDTO, NatureCreateDTO>{
     id!: number;
 
     @Column(DataType.STRING)
+    name!: string;
+
+    @Column(DataType.STRING)
     buff_stat!: string;
 
     @Column(DataType.STRING)

@@ -2,6 +2,7 @@
 
 export interface NatureDTO {
     id : number;
+    name : string;
     buff_stat : string;
     nerf_stat : string;
     hp_multiplier : number;
@@ -15,6 +16,7 @@ export interface NatureDTO {
 export interface NatureCreateDTO {
     buff_stat : string;
     nerf_stat : string;
+    name : string;
     hp_multiplier : number;
     def_multiplier : number;
     attack_multiplier : number;

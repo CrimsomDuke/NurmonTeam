@@ -11,4 +11,6 @@ module.exports = (app : Express, container : Container) => {
     require('./team.routes')(app, container, container.MiddlewareProvider);
     require('./type.routes')(app, container, container.MiddlewareProvider);
     require('./ability.routes')(app, container, container.MiddlewareProvider);
+    require('./nature.routes')(app, container, container.MiddlewareProvider);
+    require('./team_member.routes')(app, container, container.MiddlewareProvider);
 }
