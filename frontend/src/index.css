@@ -1,10 +1,19 @@
 
 body{
-    background-color: #8b8b8b;
-    color: #ffffff;
+    background-color: #cecdcd;
+    color: #000000;
     font-family: 'Roboto', sans-serif;
+    font-size: 18px;
 }
 
 .form-container {
     max-width: 400px;
+}
+
+.form-container {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

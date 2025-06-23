@@ -3,24 +3,18 @@ import global_vars from "../../../../global/global_vars";
 import { useAuth } from "../../../hooks/useAuth";
 import AdminNavbar from "../../../components/admin/AdminNavbar";
 import type { UserDataDTO } from "../../../types/types";
+import { Link } from "react-router-dom";
 
 const UsersListView = () => {
 
     const { getToken } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>('');
-    const [shallReload, setShallReload] = useState<boolean>(false);
     const [users, setUsers] = useState<UserDataDTO[]>([]);
 
     useEffect(() => {
         fetchUsers();
+        console.log(getToken());
     }, [])
-
-    useEffect(() => {
-        if (shallReload) {
-            fetchUsers();
-            setShallReload(false);
-        }
-    }, [shallReload]);
 
     const fetchUsers = async () => {
         try{
@@ -45,9 +39,6 @@ const UsersListView = () => {
         }
     }
 
-    const setAdmin = (userId : number, is_admin : boolean) => async () => {
-        console.log("Setting admin status for user:", userId, "Is Admin:", is_admin);
-    }
 
     return (
         <>
@@ -62,7 +53,7 @@ const UsersListView = () => {
                                 <th className="text-center">Username</th>
                                 <th className="text-center">Email</th>
                                 <th className="text-center">Is Admin</th>
-                                <th className="text-center">Make Admin</th>
+                                <th className="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,10 +63,7 @@ const UsersListView = () => {
                                     <td className="text-center">{user.email}</td>
                                     <td className="text-center">{user.is_admin ? 'Yes' : 'No'}</td>
                                     <td className="text-center">
-                                        <button className="btn btn-primary"
-                                            onClick={setAdmin(user.id, user.is_admin)}>
-                                                {user.is_admin ? 'Remove Admin' : 'Make Admin'}
-                                        </button>
+                                        <Link className="btn btn-primary" to={`/admin/users/form/${user.id}`}>Edit</Link>
                                     </td>
                                 </tr>
                             ))}

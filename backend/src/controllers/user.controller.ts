@@ -47,6 +47,10 @@ class UserController{
             }
 
             const token = await this.userService.loginUser(user);
+            if(!token){
+                res.status(401).json({ error: "Invalid username or password" });
+                return;
+            }
             res.status(200).json(token);
         } catch (err) {
             console.error("Error logging in user:", err);

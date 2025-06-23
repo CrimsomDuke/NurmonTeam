@@ -11,6 +11,8 @@ import NurmonMovementController from "../controllers/nurmon_movement.controller"
 import { Nurmon } from "../models/nurmon";
 import NurmonMovementService from "../services/nurmon_movement.service";
 import TeamService from "../services/team.service";
+import TypeService from "../services/type.service";
+import AbilityService from "../services/ability.service";
 
 class Container {
 
@@ -25,6 +27,8 @@ class Container {
     public readonly ItemService : ItemService;
     public readonly NurmonMovementService : NurmonMovementService
     public readonly TeamService : TeamService;
+    public readonly TypeService : TypeService;
+    public readonly AbilityService : AbilityService
 
     private constructor(dbContext : Database) {
         console.log("Container initialized");
@@ -37,6 +41,9 @@ class Container {
         this.ItemService = new ItemService(dbContext);
         this.NurmonMovementService = new NurmonMovementService(dbContext);
         this.TeamService = new TeamService(dbContext);
+        this.TypeService = new TypeService(dbContext);
+        this.AbilityService = new AbilityService(dbContext);
+
     }
     
     public static getInstance(dbContext : Database): Container {

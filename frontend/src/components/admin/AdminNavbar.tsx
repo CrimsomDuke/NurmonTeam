@@ -19,12 +19,13 @@ const AdminNavbar = () => {
         <>
             <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="mb-3 w-100 p-3">
                 <Container>
-                    <Navbar.Brand>Verruckte Munzen</Navbar.Brand>
+                    <Navbar.Brand>Nurmon Team</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Link className="nav-link" to="/admin">Users</Link>
-                            <Link className="nav-link" to="/admin/coins">Coins</Link>
+                            <Link className="nav-link" to="/admin/nurmons">Nurmons</Link>
+                            <Link className="nav-link" to="/admin/items">Items</Link>
                             <NavDropdown title="Options">
                                 <Link className="dropdown-item" to="/">User Mode</Link>
                                 <NavDropdown.Item onClick={() => logout()}>Logout</NavDropdown.Item>

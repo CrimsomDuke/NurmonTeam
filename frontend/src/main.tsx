@@ -9,6 +9,11 @@ import LoginView from './views/main/LoginVew.tsx';
 import RegisterView from './views/main/RegisterView.tsx';
 import MainView from './views/main/MainView.tsx';
 import UsersListView from './views/admin/users/UserListView.tsx';
+import UserFormView from './views/admin/users/UserFormView.tsx';
+import NurmonsListView from './views/admin/nurmons/NurmonsListView.tsx';
+import NurmonFormView from './views/admin/nurmons/NurmonFormView.tsx';
+import ItemsListView from './views/admin/items/ItemListView.tsx';
+import ItemFormView from './views/admin/items/ItemFormView.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -20,7 +25,16 @@ createRoot(document.getElementById('root')!).render(
 
           {/* ADMIN MODE */}
           <Route path='/admin/' element={<UsersListView />} />
+          <Route path='/admin/users/form/:id' element={<UserFormView />} />
+          <Route path='/admin/nurmons/' element={<NurmonsListView />} />
+          <Route path='/admin/nurmons/form/' element={<NurmonFormView />} />
+          <Route path='/admin/nurmons/form/:id' element={<NurmonFormView />} />
+          <Route path='/admin/items/' element={<ItemsListView />} />
+          <Route path='/admin/items/form/' element={<ItemFormView />} />
+          <Route path='/admin/items/form/:id' element={<ItemFormView />} />
 
+          {/* User management routes */}
+ 
           {/* Main application route */}
           <Route path="/" element={<MainView />} />
 

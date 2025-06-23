@@ -115,7 +115,7 @@ class UserService {
 
             const isPasswordValid = await bcrypt.compare(user.password, existingUser.password);
             if (!isPasswordValid) {
-                throw new Error("Invalid password");
+                return null
             }
 
             const payload: UserPayload = {

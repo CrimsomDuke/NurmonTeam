@@ -9,4 +9,6 @@ module.exports = (app : Express, container : Container) => {
     require('./item.routes')(app, container, container.MiddlewareProvider);
     require('./nurmon_movement.routes')(app, container, container.MiddlewareProvider);
     require('./team.routes')(app, container, container.MiddlewareProvider);
+    require('./type.routes')(app, container, container.MiddlewareProvider);
+    require('./ability.routes')(app, container, container.MiddlewareProvider);
 }
