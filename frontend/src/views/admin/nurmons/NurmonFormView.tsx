@@ -7,6 +7,7 @@ import global_vars from "../../../../global/global_vars";
 import CustomComboBox from "../../../components/CustomComboBox";
 import type { AbilityDataDTO, TypeDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
+import NurmonMovementsFormView from "../../../components/admin/NurmonMovementForm";
 
 
 const NurmonFormView = () => {
@@ -260,14 +261,14 @@ const NurmonFormView = () => {
     return (
         <>
             <AdminNavbar />
-            <main className="container m-3 p-3">
+            <main className="container m-2 p-2">
                 <h1>Nurmon Form</h1>
                 <Link to="/admin/nurmons" className="btn btn-secondary mb-3">Back to Nurmons List</Link>
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                 
-                <Form className="m-3 card dark-mode m-3 p-3 justify-content-center" onSubmit={handleSubmit}>
+                <Form className="m-2 card dark-mode p-2 justify-content-center" onSubmit={handleSubmit}>
                     <Row>
-                        <Col md={5} className="card m-3 p-3">
+                        <Col md={4} className="card m-3 p-3">
                             <Form.Group>
                                 <Form.Label>Nurmon Name</Form.Label>
                                 <Form.Control type="text" placeholder="Enter the Nurmon name" className="form-control" 
@@ -292,7 +293,7 @@ const NurmonFormView = () => {
 
                             {/** Abilities section */}
                         </Col>
-                        <Col md={5} className="card m-3 p-3">
+                        <Col md={4} className="card m-3 p-3">
                             <Form.Group>
                                 <Form.Label>HP</Form.Label>
                                 <Form.Control type="number" placeholder="Enter base HP value for the Nurmon" 
@@ -354,6 +355,9 @@ const NurmonFormView = () => {
                         )}
                     </Row>  
                 </Form>
+                <Row>
+                    <NurmonMovementsFormView nurmonId={parseInt(params.id!)} />
+                </Row>
             </main>
         </>
     );

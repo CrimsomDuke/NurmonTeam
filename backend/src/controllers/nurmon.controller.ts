@@ -46,6 +46,23 @@ class NurmonController{
         }
     }
 
+    getNurmonsBySearch : RequestHandler = async (req : Request, res : Response) => {
+        const searchTerm = req.query.term as string;
+        if(!searchTerm){
+            res.status(400).json({ error: "Search term is required" });
+            return;
+        }
+
+        try {
+            const nurmons = await this.nurmonService.getNurmonsBySearch(searchTerm);
+            res.status(200).json(nurmons);
+        } catch (error) {
+            console.error("Error fetching Nurmons by search term:", error);
+            res.status(500).json({ error: "Internal server error" });
+            return;
+        }
+    }
+
     createNurmon : RequestHandler = async (req : Request, res : Response) => {
         console.log(req.body)
         if(!req.files || !req.files.image) {

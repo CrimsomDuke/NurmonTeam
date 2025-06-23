@@ -20,8 +20,7 @@ class NurmonMovementService {
                     },
                     {
                         model: this.db.Movement,
-                        as: 'movement',
-                        attributes: ['id', 'name']
+                        as: 'movement'
                     }
                 ]
             });
@@ -44,8 +43,7 @@ class NurmonMovementService {
                     },
                     {
                         model: this.db.Movement,
-                        as: 'movement',
-                        attributes: ['id', 'name']
+                        as: 'movement'
                     }
                 ]
             });

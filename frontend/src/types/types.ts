@@ -58,3 +58,10 @@ export interface MovementDataDTO{
     type_id : number;
     type : TypeDataDTO | null;
 }
+
+export interface NurmonMovementDataDTO {
+    id: number;
+    nurmon_id: number;
+    movement_id: number;
+    movement: MovementDataDTO; // assuming relation populated
+}

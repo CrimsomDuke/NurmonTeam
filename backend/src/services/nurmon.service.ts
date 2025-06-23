@@ -1,6 +1,6 @@
 import { Database } from "../models"
 import { NurmonCreateDTO, NurmonUpdateDTO } from "../models/dtos/nurmon.types";
-
+import { Op } from "sequelize";
 
 class NurmonService {
     private db : Database;
@@ -39,7 +39,9 @@ class NurmonService {
     async getNurmonByName(name: string) {
         try {
             const nurmon = await this.db.Nurmon.findOne({
-                where: { name },
+                where: { 
+                    name
+                 },
                 include: [
                     {
                         model: this.db.Type,
@@ -53,6 +55,28 @@ class NurmonService {
             return nurmon;
         } catch (error) {
             console.error("Error fetching Nurmon by name:", error);
+            throw error;
+        }
+    }
+
+    async getNurmonsBySearch(query : string){
+        try {
+            const nurmons = await this.db.Nurmon.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: `%${query}%`
+                    }
+                },
+                include: [
+                    {
+                        model: this.db.Type,
+                        as: 'type'
+                    }
+                ]
+            });
+            return nurmons;
+        } catch (error) {
+            console.error("Error fetching Nurmons by search query:", error);
             throw error;
         }
     }

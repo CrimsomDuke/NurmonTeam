@@ -1,5 +1,6 @@
 import { Database } from "../models";
 import { ItemCreateDTO, ItemUpdateDTO } from "../models/dtos/item.types";
+import { Op } from "sequelize";
 
 
 class ItemService {
@@ -43,6 +44,22 @@ class ItemService {
             return item;
         }catch(error){
             console.error("Error fetching item by name:", error);
+            throw error;
+        }
+    }
+
+    async getItemBySearch(searchTerm : string){
+        try{
+            const items = await this.db.Item.findAll({
+                where: {
+                    name: {
+                        [Op.iLike]: `%${searchTerm}%`
+                    }
+                }
+            });
+            return items;
+        }catch(error){
+            console.error("Error fetching items by search term:", error);
             throw error;
         }
     }

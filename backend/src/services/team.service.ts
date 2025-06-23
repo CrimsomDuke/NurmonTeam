@@ -41,8 +41,8 @@ class TeamService{
                     model : this.db.TeamMember,
                     as: 'teamMembers',
                     include: [{
-                        model: this.db.User,
-                        as: 'user'
+                        model: this.db.Nurmon,
+                        as: 'nurmon'
                     }]
                 }
             });

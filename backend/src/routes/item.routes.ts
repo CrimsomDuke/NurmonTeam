@@ -8,6 +8,7 @@ module.exports = (app : Application, container : Container, middlewareProvider :
     const controller = new ItemController(container.ItemService);
 
     app.get('/api/items', controller.getAllItem);
+    app.get('/api/items/search', controller.getItemsBySearch);
     app.post('/api/items/create', middlewareProvider.isAdminMiddleware, controller.createItem);
 
     app.get('/api/items/:id', controller.getItemById);

@@ -63,7 +63,23 @@ class ItemController {
             console.error("Error fetching item by name:", error);
             res.status(500).json({ error: "Internal server error" });
         }
-}
+    }
+
+    getItemsBySearch : RequestHandler = async (req : Request, res : Response) => {
+        const searchTerm = req.query.term as string;
+        if(!searchTerm){
+            res.status(400).json({ error: "Search term is required" });
+            return;
+        }
+
+        try {
+            const items = await this.itemService.getItemBySearch(searchTerm);
+            res.status(200).json(items);
+        } catch (error) {
+            console.error("Error fetching items by search term:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
 
     createItem : RequestHandler = async (req : Request, res : Response) => {
         if(!req.files || !req.files.image){
