@@ -49,3 +49,12 @@ export interface ItemDataDTO {
     description: string;
     image_path : string;
 }
+
+export interface MovementDataDTO{
+    id : number;
+    name : string;
+    power : number;
+    is_physical : boolean;
+    type_id : number;
+    type : TypeDataDTO | null;
+}

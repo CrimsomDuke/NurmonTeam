@@ -135,7 +135,7 @@ class MovementController {
             errors.is_physical = "is_physical must be a boolean";
         }
 
-        if (!movementData.type_id || typeof movementData.type_id !== 'number') {
+        if (!movementData.type_id) {
             errors.type_id = "Type ID is required and must be a number";
         }
 

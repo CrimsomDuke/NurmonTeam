@@ -14,6 +14,8 @@ import NurmonsListView from './views/admin/nurmons/NurmonsListView.tsx';
 import NurmonFormView from './views/admin/nurmons/NurmonFormView.tsx';
 import ItemsListView from './views/admin/items/ItemListView.tsx';
 import ItemFormView from './views/admin/items/ItemFormView.tsx';
+import MovementsListView from './views/admin/movements/MovementsListView.tsx';
+import MovementFormView from './views/admin/movements/MovementFormView.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -32,6 +34,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/admin/items/' element={<ItemsListView />} />
           <Route path='/admin/items/form/' element={<ItemFormView />} />
           <Route path='/admin/items/form/:id' element={<ItemFormView />} />
+          <Route path='/admin/movements/' element={<MovementsListView />} />
+          <Route path='/admin/movements/form/' element={<MovementFormView />} />
+          <Route path='/admin/movements/form/:id' element={<MovementFormView />} />
 
           {/* User management routes */}
  

@@ -26,6 +26,7 @@ const AdminNavbar = () => {
                             <Link className="nav-link" to="/admin">Users</Link>
                             <Link className="nav-link" to="/admin/nurmons">Nurmons</Link>
                             <Link className="nav-link" to="/admin/items">Items</Link>
+                            <Link className="nav-link" to="/admin/movements">Movements</Link>
                             <NavDropdown title="Options">
                                 <Link className="dropdown-item" to="/">User Mode</Link>
                                 <NavDropdown.Item onClick={() => logout()}>Logout</NavDropdown.Item>
