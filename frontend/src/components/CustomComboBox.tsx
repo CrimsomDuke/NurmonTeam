@@ -16,6 +16,7 @@ const CustomComboBox = <T extends object>(props: CustomComboBoxProps<T>) => {
     useEffect(() => {
     }, [props.dataSource]);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleChange  = props.onChange ? props.onChange : (val : string | number) => {};
 
     return (

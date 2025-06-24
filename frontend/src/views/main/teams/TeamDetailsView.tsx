@@ -27,11 +27,20 @@ const TeamDetailsView = () => {
 
     const [selectedNurmonId, setSelectedNurmonId] = useState<number | null>(null);
 
+    const [reload, setReload] = useState<boolean>(false);
+
     useEffect(() => {
         if (params.id) {
             fetchMyTeams();
         }
     }, [params.id]);
+
+    useEffect(() => {
+        if (reload) {
+            fetchTeamMembers(parseInt(params.id!));
+            setReload(false);
+        }
+    }, [reload]);
 
     useEffect(() => {
         if (teamName) {
@@ -52,9 +61,23 @@ const TeamDetailsView = () => {
         }
 
         try{
-            const teamMemberData : TeamMemberDataDTO = {
+            const teamMemberData = {
                 team_id: parseInt(params.id!),
                 nurmon_id: selectedNurmonId,
+
+                hp_ev : 0,
+                attack_ev : 0 ,
+                def_ev : 0,
+                special_attack_ev : 0,
+                special_def_ev : 0,
+                speed_ev : 0,
+
+                hp_iv : 0,
+                attack_iv : 0,
+                def_iv : 0,
+                special_attack_iv : 0,
+                special_def_iv : 0,
+                speed_iv : 0
             }
 
             const response = await fetch(`${global_vars.API_URL}/team_members/create`, {
@@ -68,7 +91,9 @@ const TeamDetailsView = () => {
 
             const data = await response.json();
             if (response.ok) {
-                navigate(`/teams/${params.id}`);
+                console.log("Shit created");
+                setReload(true);
+                handleClose();
             } else {
                 console.error(data);
                 setErrorMessage(data.data || data.message || 'Failed to add Nurmon to team');
@@ -76,6 +101,31 @@ const TeamDetailsView = () => {
         }catch(err){
             console.error(err);
             setErrorMessage("An unexpected error occurred while adding Nurmon to the team.");
+        }
+    }
+
+    const handleDelete = async () => {
+        if(!params.id){
+            setErrorMessage("Can't delete a team without ID");
+            return;
+        }
+
+        const response = await fetch(`${global_vars.API_URL}/teams/delete/${params.id}`, {
+            method : 'DELETE',
+            headers : {
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${getToken()}`
+            }
+        });
+
+        const data = await response.json();
+
+        if(response.ok){
+            navigate('/');
+            console.log("Team deleted successfully");
+        }else{
+            setErrorMessage(data.data || data.message || 'Failed to delete team');
+            console.error(data);
         }
     }
 
@@ -170,7 +220,13 @@ const TeamDetailsView = () => {
                     )}
 
                     {teamMembers &&teamMembers.length < 6 && (
-                        <button className="btn btn-primary m-3" onClick={handleShow}>Add Team Member</button>       
+                        <div className="d-flex justify-content-between">
+                            <button className="btn btn-primary m-3" onClick={handleShow}>Add Team Member</button>  
+                            <button className="btn btn-danger m-3"
+                                 onClick={() => confirm('Delete Team?') ?  handleDelete() : console.log('Deletion cancelled')}>
+                                Delete Team
+                            </button>
+                        </div>     
                     )}
                 </div>
             </main>
@@ -197,7 +253,7 @@ const TeamDetailsView = () => {
                         </Form.Group>
                         <Modal.Footer>
                             <Form.Group>
-                                <button className="btn btn-primary">Add Nurmon to Team</button>
+                                <button type="submit" className="btn btn-primary">Add Nurmon to Team</button>
                             </Form.Group>
                         </Modal.Footer>
                     </Form>

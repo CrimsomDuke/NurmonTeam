@@ -17,6 +17,7 @@ import ItemFormView from './views/admin/items/ItemFormView.tsx';
 import MovementsListView from './views/admin/movements/MovementsListView.tsx';
 import MovementFormView from './views/admin/movements/MovementFormView.tsx';
 import TeamDetailsView from './views/main/teams/TeamDetailsView.tsx';
+import TeamMemberView from './views/main/teams/TeamMemberView.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
           {/* Main application route */}
           <Route path="/" element={<MainView />} />
           <Route path="/teams/:id" element={<TeamDetailsView />} />
+          <Route path='/team_member/:id' element={<TeamMemberView />} />
 
         </Routes>
       </BrowserRouter>

@@ -71,7 +71,10 @@ class TeamService{
                 throw new Error("Team not found");
             }
 
+            console.log(teamData)
             team.name = teamData.name || team.name;
+
+            await team.save();
 
             return team;
         } catch (err) {
