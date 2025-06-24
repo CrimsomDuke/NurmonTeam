@@ -31,9 +31,9 @@ class TeamService{
         }
     }
 
-    async getTeamByUserId(userId : number){
+    async getTeamsByUserId(userId : number){
         try {
-            const team = await this.db.Team.findOne({
+            const teams = await this.db.Team.findAll({
                 where: {
                     user_id: userId
                 },
@@ -46,10 +46,8 @@ class TeamService{
                     }]
                 }
             });
-            if (!team) {
-                return null;
-            }
-            return team;
+
+            return teams;
         } catch (err) {
             console.error("Error fetching team by user ID:", err);
             throw err;

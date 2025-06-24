@@ -65,3 +65,53 @@ export interface NurmonMovementDataDTO {
     movement_id: number;
     movement: MovementDataDTO; // assuming relation populated
 }
+
+export interface NatureDataDTO {
+    id : number;
+    name : string;
+    buff_stat : string;
+    nerf_stat : string;
+    hp_multiplier : number;
+    def_multiplier : number;
+    attack_multiplier : number;
+    special_attack_multiplier : number;
+    special_def_multiplier : number;
+    speed_multiplier : number;
+}
+
+export interface TeamDataDTO {
+    id : number;
+    name : string;
+    user_id : number;
+
+    teamMembers : TeamMemberDataDTO[]; 
+}
+
+export interface TeamMemberDataDTO {
+    id : number;
+    nickname : string;
+    nurmon_id : number;
+    team_id : number;
+    nature_id : number | null;
+    selected_ability_id : number | null;
+    item_id : number | null;
+
+    hp_ev : number;
+    attack_ev : number ;
+    def_ev : number;
+    special_attack_ev : number;
+    special_def_ev : number;
+    speed_ev : number;
+
+    hp_iv : number;
+    attack_iv : number;
+    def_iv : number;
+    special_attack_iv : number;
+    special_def_iv : number;
+    speed_iv : number;
+
+    nurmon: NurmonDataDTO;
+    item: ItemDataDTO | null;
+    selected_ability: AbilityDataDTO | null;
+    nature: NatureDataDTO | null; // Assuming nature is a type, adjust if it's different
+}

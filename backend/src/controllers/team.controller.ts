@@ -1,13 +1,18 @@
 import { Request, RequestHandler, Response } from "express";
 import TeamService from "../services/team.service";
 import { TeamCreateDTO, TeamUpdateDTO } from "../models/dtos/team.types";
+import { TokenService } from "../services/token.service";
+import { UserService } from "../services/user.service";
+import { UserDTO } from "../models/dtos/user.types";
 
 
 class TeamController {
     private readonly teamService : TeamService;
+    private readonly userService : UserService
 
-    constructor(teamService : TeamService){
+    constructor(teamService : TeamService, userService : UserService) {
         this.teamService = teamService;
+        this.userService = userService;
     }
 
     getAllTeams : RequestHandler = async (req : Request, res : Response) => {
@@ -46,7 +51,7 @@ class TeamController {
                 res.status(400).json({ error: "Invalid user ID" });
                 return;
             }
-            const team = await this.teamService.getTeamByUserId(userId);
+            const team = await this.teamService.getTeamsByUserId(userId);
             if (!team) {
                 res.status(404).json({ error: "Team not found for this user" });
                 return;
@@ -55,6 +60,30 @@ class TeamController {
         } catch (err) {
             console.error("Error fetching team by user ID:", err);
             res.status(500).json({ error: "Error fetching teams by user id", data: (err as Error).message });
+        }
+    }
+
+    getMyTeams : RequestHandler = async (req : Request, res : Response) => {
+        try{
+            const token = req.headers.authorization?.split(" ")[1];
+            if(!token){
+                res.status(401).json({ error: "Unauthorized" });
+                return;
+            }
+
+            const user = await this.userService.getUserByToken(token);
+            if(!user){
+                res.status(401).json({ error: "Unauthorized" });
+                return;
+            }
+
+            const teams = await this.teamService.getTeamsByUserId(user.id);
+
+            res.status(200).json(teams);
+            return;
+        }catch(err){
+            console.error("Error fetching my teams:", err);
+            res.status(500).json({ error: "Error fetching my teams", data: (err as Error).message });
         }
     }
 

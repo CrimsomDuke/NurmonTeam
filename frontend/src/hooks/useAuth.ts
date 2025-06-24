@@ -75,8 +75,12 @@ export const useAuth = (shouldRedirect : boolean = true) => {
         return user?.is_admin;
     }
 
+    const getCurrentUserId = () => {
+        return user?.id || 0;
+    }
+
     return {
-        isAuthenticated, logout, saveToken, getToken, isCurrentUserAdmin
+        isAuthenticated, logout, saveToken, getToken, isCurrentUserAdmin, getCurrentUserId
     }
 
 }

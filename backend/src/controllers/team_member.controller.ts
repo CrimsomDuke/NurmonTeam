@@ -17,7 +17,7 @@ class TeamMemberController {
             res.status(200).json(teamMembers);
         } catch (err) {
             console.error("Error fetching all team members:", err);
-            res.status(500).json({ error: "Error while fetching the team members", data : err });
+            res.status(500).json({ error: "Error while fetching the team members", data : (err as Error).message });
         }
     }
 
@@ -29,7 +29,7 @@ class TeamMemberController {
         }
 
         try {
-            const teamMember = await this.teamMemberService.teamMemberById(id);
+            const teamMember = await this.teamMemberService.getTeamMemberById(id);
             if (!teamMember) {
                 res.status(404).json({ error: "Team member not found" });
                 return;
@@ -74,7 +74,7 @@ class TeamMemberController {
             res.status(201).json(createdTeamMember);
         }catch(err){
             console.error("Error creating team member:", err);
-            res.status(500).json({ error: "Error while creating the team member", data : err });
+            res.status(500).json({ error: "Error while creating the team member", data : (err as Error).message });
         }
     }
 
@@ -97,7 +97,7 @@ class TeamMemberController {
             res.status(200).json(updatedTeamMember);
         } catch (err) {
             console.error("Error updating team member:", err);
-            res.status(500).json({ error: "Error while updating the team member", data : err });
+            res.status(500).json({ error: "Error while updating the team member", data : (err as Error).message });
         }
     }
 
@@ -113,16 +113,12 @@ class TeamMemberController {
             res.status(201).send({ message : "Team member deleted successfully" });
         } catch (err) {
             console.error("Error deleting team member:", err);
-            res.status(500).json({ error: "Error while deleting the team member", data : err });
+            res.status(500).json({ error: "Error while deleting the team member", data : (err as Error).message });
         }
     }
 
     private validateTeamMemberData(teamMemberData: TeamMemberCreateDTO) {
         const errors : any = {}
-
-        if (!teamMemberData.nickname || teamMemberData.nickname.trim() === "") {
-            errors.nickname = "Nickname is required";
-        }
 
         if (!teamMemberData.nurmon_id) {
             errors.nurmon_id = "Nurmon ID is required";

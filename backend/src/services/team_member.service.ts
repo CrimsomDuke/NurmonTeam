@@ -33,7 +33,7 @@ class TeamMemberService {
         }
     }
 
-    async teamMemberById(id: number) {
+    async getTeamMemberById(id: number) {
         try {
             const teamMember = await this.db.TeamMember.findByPk(id, {
                 include: [
@@ -173,12 +173,12 @@ class TeamMemberService {
     }
 
     private async validateTeamMemberData(teamMemberData: TeamMemberCreateDTO) {
+
         const team = await this.db.Team.findByPk(teamMemberData.team_id, {
             include : [
                 {
                     model: this.db.TeamMember,
-                    as: 'teamMembers',
-                    where: { nurmon_id: teamMemberData.nurmon_id }
+                    as: 'teamMembers'
                 }
             ]
         });
