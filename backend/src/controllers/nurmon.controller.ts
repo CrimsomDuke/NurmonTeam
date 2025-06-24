@@ -47,10 +47,9 @@ class NurmonController{
     }
 
     getNurmonsBySearch : RequestHandler = async (req : Request, res : Response) => {
-        const searchTerm = req.query.term as string;
+        let searchTerm = req.query.term as string;
         if(!searchTerm){
-            res.status(400).json({ error: "Search term is required" });
-            return;
+            searchTerm = "";
         }
 
         try {

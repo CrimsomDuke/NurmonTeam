@@ -50,10 +50,6 @@ class TeamMemberController {
 
         try {
             const teamMembers = await this.teamMemberService.getTeamMembersByTeamId(teamId);
-            if (!teamMembers || teamMembers.length === 0) {
-                res.status(404).json({ error: "No team members found for this team" });
-                return;
-            }
             res.status(200).json(teamMembers);
         } catch (err) {
             console.error("Error fetching team members by team ID:", err);

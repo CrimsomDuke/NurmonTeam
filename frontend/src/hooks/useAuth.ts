@@ -23,7 +23,6 @@ export const useAuth = (shouldRedirect : boolean = true) => {
             console.log("USUARIO NO AUTENTICADO, REDIRIGIENDO A LOGIN")
             navigate("/auth/login");
         }else{
-            console.log(user);
             fetchUserInfo();
         }
     }, [isAuthenticated])

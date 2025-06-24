@@ -69,7 +69,12 @@ class TeamMemberService {
                     {
                         model: this.db.Nurmon,
                         as: 'nurmon',
-                        attributes: ['id', 'name']
+                        include : [
+                            {
+                                model : this.db.Type,
+                                as : 'type',
+                            }
+                        ]
                     },
                     {
                         model : this.db.Nature,
