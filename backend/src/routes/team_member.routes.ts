@@ -5,7 +5,7 @@ import TeamMemberController from "../controllers/team_member.controller";
 
 
 module.exports = (app : Application, container : Container, middlewareProvider : MiddlewareProvider) => {
-    const controller = new TeamMemberController(container.TeamMemberService);
+    const controller = new TeamMemberController(container.TeamMemberService, container.NurmonService);
 
     app.get('/api/team_members', controller.getAllTeamMembers);
     app.post('/api/team_members/create', middlewareProvider.authMiddleware, controller.createTeamMember);

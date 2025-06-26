@@ -1,3 +1,6 @@
+import { AbilityDTO } from "./ability.types";
+import { NatureDTO } from "./nature.types";
+import { NurmonDTO } from "./nurmon.types";
 
 
 export interface TeamMemberDTO {
@@ -22,6 +25,10 @@ export interface TeamMemberDTO {
     special_attack_iv : number;
     special_def_iv : number;
     speed_iv : number;
+
+    nurmon? : NurmonDTO | null;
+    nature? : NatureDTO | null;
+    selected_ability? : AbilityDTO | null;
 }
 
 export interface TeamMemberCreateDTO {

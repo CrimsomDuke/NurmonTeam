@@ -1,3 +1,4 @@
+import { AbilityDTO } from "./ability.types";
 
 
 export interface NurmonDTO {
@@ -14,6 +15,10 @@ export interface NurmonDTO {
     first_ability_id : number | null;
     second_ability_id : number | null;
     third_ability_id : number | null;
+
+    first_ability? : AbilityDTO | null;
+    second_ability? : AbilityDTO | null;
+    third_ability? : AbilityDTO | null;
 }
 
 export interface NurmonCreateDTO {

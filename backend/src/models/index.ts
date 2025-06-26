@@ -13,7 +13,7 @@ import { MemberNurmonMovement } from './member_nurmon_movement';
 import { TeamMember } from './team_member';
 
 class Database {
-    private sequelize: Sequelize;
+    public sequelize: Sequelize;
 
     public User = User;
     public Team = Team;

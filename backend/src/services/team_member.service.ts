@@ -38,14 +38,26 @@ class TeamMemberService {
             const teamMember = await this.db.TeamMember.findByPk(id, {
                 include: [
                     {
-                        model: this.db.Team,
-                        as: 'team',
-                        attributes: ['id', 'name']
-                    },
-                    {
                         model: this.db.Nurmon,
                         as: 'nurmon',
-                        attributes: ['id', 'name']
+                        include : [
+                            {
+                                model : this.db.Type,
+                                as : 'type',
+                            }
+                        ]
+                    },
+                    {
+                        model : this.db.Nature,
+                        as : 'nature'
+                    },
+                    {
+                        model : this.db.Ability,
+                        as : 'selected_ability'
+                    },
+                    {
+                        model : this.db.Item,
+                        as : 'item'
                     }
                 ]
             });
@@ -100,7 +112,7 @@ class TeamMemberService {
 
     async createTeamMember(teamMemberData : TeamMemberCreateDTO){
         try{
-            const validationError = await this.validateTeamMemberData(teamMemberData);
+            const validationError = await this.validateTeamMemberData(teamMemberData, 'CREATE');
             if(validationError) {
                 throw new Error(validationError);
             }
@@ -130,7 +142,7 @@ class TeamMemberService {
                 throw Error("team member not found");
             }
 
-            const validationError = await this.validateTeamMemberData(teamMemberData as TeamMemberCreateDTO);
+            const validationError = await this.validateTeamMemberData(teamMemberData as TeamMemberCreateDTO, 'UPDATE');
             if(validationError) {
                 throw new Error(validationError);
             }
@@ -177,7 +189,7 @@ class TeamMemberService {
         }
     }
 
-    private async validateTeamMemberData(teamMemberData: TeamMemberCreateDTO) {
+    private async validateTeamMemberData(teamMemberData: TeamMemberCreateDTO, operation : string) {
 
         const team = await this.db.Team.findByPk(teamMemberData.team_id, {
             include : [
@@ -191,7 +203,7 @@ class TeamMemberService {
             return 'Team not found';
         }
 
-        if(team.teamMembers && team.teamMembers.length >= 6) {
+        if(team.teamMembers && team.teamMembers.length >= 6 && operation == 'CREATE') {
             return 'Team is full, cannot add more members';
         }
 

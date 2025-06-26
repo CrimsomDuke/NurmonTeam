@@ -26,14 +26,47 @@ class NurmonService {
             include: [
                 {
                     model: this.db.Type,
-                    as: 'type'
+                    as: 'type',
+                },
+                {
+                    model : this.db.Ability,
+                    as : 'first_ability'
+                },
+                {
+                    model : this.db.Ability,
+                    as : 'second_ability',
+                },
+                {
+                    model : this.db.Ability,
+                    as : 'third_ability',
+                    
                 }
             ]
         });
+
         if (!nurmon) {
             return null;
         }
-        return nurmon;
+
+        // hay que hacer esta maniobrita para evitar que las putas abilities
+        // no se repitan al ser 1 id y 2,3 null
+
+        const plain = nurmon.get({ plain: true });
+        console.log(plain);
+
+        if(!plain.first_ability_id){
+            plain.first_ability = null;
+        }
+
+        if(!plain.second_ability_id){
+            plain.second_ability = null;
+        }
+
+        if(!plain.third_ability_id){
+            plain.third_ability = null;
+        }
+
+        return plain;
     }
 
     async getNurmonByName(name: string) {

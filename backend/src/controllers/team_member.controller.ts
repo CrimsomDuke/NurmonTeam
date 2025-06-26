@@ -1,14 +1,19 @@
 import { Request, RequestHandler, Response } from "express";
 import TeamMemberService from "../services/team_member.service";
 import { TeamMemberCreateDTO } from "../models/dtos/team_member.types";
+import { Nurmon } from "../models/nurmon";
+import { NurmonService } from "../services/nurmon.service";
+import { NurmonDTO } from "../models/dtos/nurmon.types";
 
 
 class TeamMemberController {
 
     private readonly teamMemberService : TeamMemberService;
+    private readonly nurmonService : NurmonService;
 
-    constructor(teamMemberService : TeamMemberService) {
+    constructor(teamMemberService : TeamMemberService, nurmonService : NurmonService) {
         this.teamMemberService = teamMemberService;
+        this.nurmonService = nurmonService;
     }
 
     getAllTeamMembers : RequestHandler = async (req : Request, res : Response) => {
@@ -34,10 +39,11 @@ class TeamMemberController {
                 res.status(404).json({ error: "Team member not found" });
                 return;
             }
+
             res.status(200).json(teamMember);
         } catch (err) {
             console.error("Error fetching team member by ID:", err);
-            res.status(500).json({ error: "Error retrieving data", data : err });
+            res.status(500).json({ error: "Error retrieving data", data : (err as Error).message });
         }
     }
 
