@@ -198,7 +198,7 @@ const ItemFormView = () => {
                                 </Form.Group>
                                 { image && typeof image === 'string' && (
                                     <div className="mt-3">
-                                        <img src={`${global_vars.UPLOADS_URL}/item/${image}`} alt="Item Preview" className="img-thumbnail" 
+                                        <img src={`${global_vars.UPLOADS_URL}/item/${image}?t=${new Date().getTime()}`} alt="Item Preview" className="img-thumbnail" 
                                             style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "200px", minWidth: "200px"  }} />
                                     </div>
                                 )}

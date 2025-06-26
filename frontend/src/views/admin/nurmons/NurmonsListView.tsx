@@ -49,7 +49,7 @@ const NurmonsListView = () => {
                         <div key={nurmon.id} className="col">
                             <div className="card h-100 shadow-sm border-0">
                                 {nurmon.image_path && (
-                                    <img src={global_vars.UPLOADS_URL + "/nurmon/" + nurmon.image_path} alt={nurmon.name} className="card-img-top" style={{ objectFit: "cover", height: "200px" }} />
+                                    <img src={global_vars.UPLOADS_URL + "/nurmon/" + nurmon.image_path + `?t=${new Date().getTime()}`} alt={nurmon.name} className="card-img-top" style={{ objectFit: "cover", height: "200px" }} />
                                 )}
                                 <div className="card-body">
                                     <h5 className="card-title">{nurmon.name}</h5>

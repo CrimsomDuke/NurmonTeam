@@ -49,7 +49,7 @@ const ItemsListView = () => {
                         <div key={item.id} className="col">
                             <div className="card h-100 shadow-sm border-0">
                                 {item.image_path && (
-                                    <img src={global_vars.UPLOADS_URL + "/item/" + item.image_path} alt={item.name} className="card-img-top" style={{ objectFit: "cover", height: "200px" }} />
+                                    <img src={global_vars.UPLOADS_URL + "/item/" + item.image_path + `?t=${new Date().getTime()}`} alt={item.name} className="card-img-top" style={{ objectFit: "cover", height: "200px" }} />
                                 )}
                                 <div className="card-body">
                                     <h5 className="card-title">{item.name}</h5>

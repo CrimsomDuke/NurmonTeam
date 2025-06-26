@@ -287,7 +287,7 @@ const NurmonFormView = () => {
                             </Form.Group>
                             { nurmonImage && typeof nurmonImage === 'string' && (
                                 <div className="mt-3">
-                                    <img src={global_vars.UPLOADS_URL + "/nurmon/" + nurmonImage} alt="Nurmon" className="img-fluid" />
+                                    <img src={`${global_vars.UPLOADS_URL}/nurmon/${nurmonImage}?t=${new Date().getTime()}`} alt="Nurmon" className="img-fluid" />
                                 </div>
                             )}
 
