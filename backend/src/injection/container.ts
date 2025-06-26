@@ -15,6 +15,7 @@ import TypeService from "../services/type.service";
 import AbilityService from "../services/ability.service";
 import NatureService from "../services/nature.service";
 import TeamMemberService from "../services/team_member.service";
+import MemberNurmonMovementService from "../services/member_nurmon_movement.service";
 
 class Container {
 
@@ -33,6 +34,7 @@ class Container {
     public readonly AbilityService : AbilityService
     public readonly NatureService : NatureService;
     public readonly TeamMemberService : TeamMemberService;
+    public readonly MemberNurmonMovementService : MemberNurmonMovementService;
 
     private constructor(dbContext : Database) {
         console.log("Container initialized");
@@ -49,6 +51,7 @@ class Container {
         this.AbilityService = new AbilityService(dbContext);
         this.NatureService = new NatureService(dbContext);
         this.TeamMemberService = new TeamMemberService(dbContext);
+        this.MemberNurmonMovementService = new MemberNurmonMovementService(dbContext);
 
     }
     

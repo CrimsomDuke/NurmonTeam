@@ -16,12 +16,12 @@ export class MemberNurmonMovement extends Model<MemberNurmonMovementDTO, MemberN
     team_member_id! : number;
 
     @BelongsTo(() => TeamMember)
-    team_member!: TeamMember;
+    teamMember!: TeamMember;
 
     @ForeignKey(() => NurmonMovement)
     @Column(DataType.INTEGER)
     nurmon_movement_id! : number;
 
     @BelongsTo(() => NurmonMovement)
-    nurmon_movement!: NurmonMovement;
+    nurmonMovement!: NurmonMovement;
 }

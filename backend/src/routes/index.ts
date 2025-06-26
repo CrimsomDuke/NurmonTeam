@@ -13,4 +13,5 @@ module.exports = (app : Express, container : Container) => {
     require('./ability.routes')(app, container, container.MiddlewareProvider);
     require('./nature.routes')(app, container, container.MiddlewareProvider);
     require('./team_member.routes')(app, container, container.MiddlewareProvider);
+    require('./member_nurmon_movement.routes')(app, container, container.MiddlewareProvider);
 }
