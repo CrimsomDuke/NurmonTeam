@@ -150,6 +150,16 @@ class MemberNurmonMovementService {
         if (teamMember.nurmon_id !== nurmonMovement.nurmon_id) {
             throw new Error("Nurmon movement does not belong to the team member's nurmon");
         }
+
+        const existingMemberNurmonMovements = await this.db.MemberNurmonMovement.findAll({
+            where : {
+                team_member_id : data.team_member_id
+            }
+        });
+
+        if(existingMemberNurmonMovements.length > 4){
+            throw new Error("A team member can only have a maximum of 4 nurmon movements");
+        }
     }
     
 }
