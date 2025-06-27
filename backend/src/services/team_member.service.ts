@@ -222,7 +222,8 @@ class TeamMemberService {
             return 'Nurmon not found';
         }
 
-        if(teamMemberData.selected_ability_id != nurmon.first_ability_id &&
+        if(teamMemberData.selected_ability_id && 
+            teamMemberData.selected_ability_id != nurmon.first_ability_id &&
             teamMemberData.selected_ability_id != nurmon.second_ability_id &&
             teamMemberData.selected_ability_id != nurmon.third_ability_id) {
             return 'Selected ability is not valid for this Nurmon';

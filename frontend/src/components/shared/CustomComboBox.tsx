@@ -5,7 +5,7 @@ type CustomComboBoxProps<T> = {
     textField: keyof T;
     valueField: keyof T;
     selectedValue?: string | number;
-    onChange?: (value: string | number) => void;
+    onChange?: (value: string | number | T) => void;
     disabled?: boolean;
     required?: boolean;
 }
