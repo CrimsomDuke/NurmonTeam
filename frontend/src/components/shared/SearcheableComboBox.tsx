@@ -57,7 +57,7 @@ const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
   };
 
   return (
-    <div className="position-relative">
+    <div className="position-relative m-2">
       <input
         className="form-control"
         type="text"

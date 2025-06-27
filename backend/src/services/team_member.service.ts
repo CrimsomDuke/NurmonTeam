@@ -149,9 +149,19 @@ class TeamMemberService {
 
             teamMember.nickname = teamMemberData.nickname || teamMember.nickname;
             teamMember.nature_id = teamMemberData.nature_id || teamMember.nature_id;
-            teamMember.selected_ability_id = teamMemberData.selected_ability_id || teamMember.selected_ability_id;
-            teamMember.item_id = teamMemberData.item_id || teamMember.item_id;
-            
+
+            if(teamMemberData.selected_ability_id == 0){
+                teamMember.selected_ability_id = null; //
+            }else{
+                teamMember.selected_ability_id = teamMemberData.selected_ability_id || teamMember.selected_ability_id;
+            }
+
+            if(teamMemberData.item_id == 0){
+                teamMember.item_id = null;
+            }else{
+                teamMember.item_id = teamMemberData.item_id || teamMember.item_id;
+            }
+
             teamMember.hp_ev = teamMemberData.hp_ev || teamMember.hp_ev;
             teamMember.attack_ev = teamMemberData.attack_ev || teamMember.attack_ev;
             teamMember.def_ev = teamMemberData.def_ev || teamMember.def_ev;

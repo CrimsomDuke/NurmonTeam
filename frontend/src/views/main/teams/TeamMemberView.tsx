@@ -150,6 +150,8 @@ const TeamMemberView = () => {
                             <Col md={7}>
                                 <MemberItemAbilityComponent 
                                     teamMemberId={teamMemberData?.id || 0}
+                                    teamId={teamMemberData?.team_id || 0}
+                                    nurmonId={teamMemberData?.nurmon_id || 0}
                                     itemId={teamMemberData?.item_id || 0}
                                     selectedAbilityId={teamMemberData?.selected_ability_id || 0} 
                                 />

@@ -9,4 +9,5 @@ module.exports = (app : Application, container : Container, middlewareProvider :
 
     app.get("/api/abilities", controller.getAllAbilities);
     app.get("/api/abilities/:id", controller.getAbilityById);
+    app.get("/api/abilities/nurmon/:id", controller.getAbilitiesByNurmonId);
 }
