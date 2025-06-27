@@ -72,6 +72,13 @@ class NurmonMovementService {
                     {
                         model: this.db.Movement,
                         as: 'movement',
+                        include : [
+                            {
+                                model: this.db.Type,
+                                as: 'type',
+                                attributes: ['id', 'name']
+                            }
+                        ]
                     }
                 ]
             });

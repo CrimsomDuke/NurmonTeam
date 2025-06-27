@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import global_vars from "../../global/global_vars";
+import global_vars from "../../../global/global_vars";
 
 interface SearchableComboBoxProps<T> {
   endpoint: string;
@@ -15,7 +15,7 @@ const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
   placeholder = "Search...", image_field = 'image_path' as keyof T, folder_name = '',
   onSelect }: SearchableComboBoxProps<T>) => {
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,6 +29,9 @@ const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
 
     const timeout = setTimeout(() => {
       searchQuery(query);
+      
+      //tuve que cambiar esta mierda para que funcione con selectedVal
+      setShowDropdown(true);
     }, 400);
 
     return () => clearTimeout(timeout);
@@ -40,7 +43,6 @@ const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
       const res = await fetch(`${endpoint}?term=${(term)}`);
       const data = await res.json();
       setResults(data || []);
-      setShowDropdown(true);
     } catch (err) {
       console.error("Failed to fetch search results", err);
     } finally {

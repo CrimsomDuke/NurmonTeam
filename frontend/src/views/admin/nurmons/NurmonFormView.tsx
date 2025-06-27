@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import global_vars from "../../../../global/global_vars";
-import CustomComboBox from "../../../components/CustomComboBox";
+import CustomComboBox from "../../../components/shared/CustomComboBox";
 import type { AbilityDataDTO, TypeDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
 import NurmonMovementsFormView from "../../../components/admin/NurmonMovementForm";
@@ -356,7 +356,9 @@ const NurmonFormView = () => {
                     </Row>  
                 </Form>
                 <Row>
-                    <NurmonMovementsFormView nurmonId={parseInt(params.id!)} />
+                    {params.id && (
+                        <NurmonMovementsFormView nurmonId={parseInt(params.id!)} />
+                    )}
                 </Row>
             </main>
         </>

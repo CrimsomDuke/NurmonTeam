@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import global_vars from "../../../global/global_vars";
-import CustomNavBar from "../../components/CustomNavbar";
+import CustomNavBar from "../../components/shared/CustomNavbar";
 import { useAuth } from "../../hooks/useAuth";
 import type { TeamDataDTO } from "../../types/types";
 import { Link } from "react-router-dom";

@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 const CustomNavBar = () => {
 

@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useAuth } from "../../hooks/useAuth";
 import type { MovementDataDTO, NurmonMovementDataDTO } from "../../types/types";
 import global_vars from "../../../global/global_vars";
-import CustomComboBox from "../CustomComboBox";
+import CustomComboBox from "../shared/CustomComboBox";
 
 
 type NurmonMovementsProps = {
@@ -37,6 +37,13 @@ const NurmonMovementsFormView = (props : NurmonMovementsProps) => {
         const data = await res.json();
         if (res.ok) {
             setAssignedMovements(data);
+            for (const entry of data) {
+                console.log('Movement ID: ', entry.movement.id, "Type: ", entry.movement.type?.name);
+            }
+        }else{
+            const errorData = await res.json();
+            setErrorMessage("Error fetching assigned movements: " + errorData.data);
+            console.error("Error fetching assigned movements:", errorData);
         }
     };
 
@@ -67,7 +74,7 @@ const NurmonMovementsFormView = (props : NurmonMovementsProps) => {
     };
 
     const handleRemoveMovement = async (id: number) => {
-        const res = await fetch(`${global_vars.API_URL}/nurmon-movements/delete/${id}`, {
+        const res = await fetch(`${global_vars.API_URL}/nurmon_movements/delete/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${getToken()}`
@@ -101,9 +108,9 @@ const NurmonMovementsFormView = (props : NurmonMovementsProps) => {
 
             <h4 className="mt-4">Assigned Movements</h4>
             <ul className="list-group">
-                {assignedMovements.map((entry) => (
+                {assignedMovements.map((entry : NurmonMovementDataDTO) => (
                     <li key={entry.id} className="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{entry.movement.name} (Power: {entry.movement.power})</span>
+                        <span>{entry.movement.name} | {entry.movement.is_physical ? 'Physical' : 'Special'} | {entry.movement.type?.name} | (Power: {entry.movement.power})</span>
                         <Button variant="danger" size="sm" onClick={() => handleRemoveMovement(entry.id)}>Remove</Button>
                     </li>
                 ))}

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import CustomNavBar from "../../../components/CustomNavbar";
+import CustomNavBar from "../../../components/shared/CustomNavbar";
 import { useAuth } from "../../../hooks/useAuth";
 import type { TeamMemberDataDTO } from "../../../types/types";
 import global_vars from "../../../../global/global_vars";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Modal } from "react-bootstrap";
-import SearchableComboBox from "../../../components/SearcheableComboBox";
+import SearchableComboBox from "../../../components/shared/SearcheableComboBox";
 
 
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import global_vars from "../../../../global/global_vars";
-import CustomNavBar from "../../../components/CustomNavbar"
+import CustomNavBar from "../../../components/shared/CustomNavbar"
 import { useAuth } from "../../../hooks/useAuth";
 import type { TeamMemberDataDTO } from "../../../types/types";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import { Button, Col, Row } from "react-bootstrap";
 
 import 'react-edit-text/dist/index.css';
 import { EditText } from "react-edit-text";
+import MemberItemAbilityComponent from "../../../components/main/MemberItemAbilityComponent";
 
 
 const TeamMemberView = () => {
@@ -147,9 +148,11 @@ const TeamMemberView = () => {
                                 </div>
                             </Col>
                             <Col md={7}>
-                                <div>
-                                    <h4>{teamMemberData?.nurmon.type?.name}</h4>
-                                </div>
+                                <MemberItemAbilityComponent 
+                                    teamMemberId={teamMemberData?.id || 0}
+                                    itemId={teamMemberData?.item_id || 0}
+                                    selectedAbilityId={teamMemberData?.selected_ability_id || 0} 
+                                />
                             </Col>
                         </Row>
                     </div>
