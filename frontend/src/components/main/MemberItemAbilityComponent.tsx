@@ -30,7 +30,7 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
     const handleModalItemShow = () => setShowModalItem(true);
 
     const [showModalSelectedAbility, setShowModalSelectedAbility] = useState(false);
-    const handleModalSelectedAbiltyClose = () => setShowModalSelectedAbility(false);    
+    const handleModalSelectedAbiltyClose = () => setShowModalSelectedAbility(false);
     const handleModalSelectedAbilityShow = () => setShowModalSelectedAbility(true);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
             fetchItemData(props.itemId);
         }
 
-        if(props.nurmonId){
+        if (props.nurmonId) {
             fetchPossibleAbilities();
         }
     }, [props.teamMemberId, props.itemId, props.selectedAbilityId, props.nurmonId]);
@@ -146,7 +146,7 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
     }
 
     const handleRemoveAbility = async () => {
-        if(!selectedAbilityData){
+        if (!selectedAbilityData) {
             alert("Please select an ability to remove.");
             return;
         }
@@ -210,14 +210,14 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : `Bearer ${getToken()}`
+                "Authorization": `Bearer ${getToken()}`
             }
         });
 
         const data = await response.json();
-        if(response.ok){
+        if (response.ok) {
             setPossibleAbilities(data);
-        }else{
+        } else {
             console.error("Error fetching possible abilities:", data.data || data.error);
             alert("Error fetching possible abilities: " + (data.data || data.error));
         }
@@ -225,102 +225,102 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
 
     return (
         <>
-            <div className="d-flex align-items-center">
-                <Row className="align-items-center mb-3">
-                    <Col md={5} className="m-2 h-100">
-                        <h5>Item</h5>
-                        {!selectedItemData && (
-                            <p className="text-muted">No item selected</p>
-                        )}
-                        {selectedItemData?.image_path && (
-                            <div className="align-items-center gap-3">
-                                <div className="d-flex align-items-center gap-3">
-                                    <img
-                                        src={`${global_vars.UPLOADS_URL}/item/${selectedItemData.image_path}`}
-                                        alt={selectedItemData.name}
-                                        className="img-thumbnail"
-                                        style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-                                    />
-                                    <h4>{selectedItemData.name}</h4>
-                                </div>
-                                <div>
-                                    <div className="fw-semibold">
-                                        <p>{selectedItemData.description}</p>
+            <div className="container">
+                <Row className="gy-4">
+                    {/* ITEM CARD */}
+                    <Col md={6}>
+                        <div className="border rounded p-3 shadow-sm h-100">
+                            <h5 className="mb-3">Item</h5>
+
+                            {!selectedItemData ? (
+                                <p className="text-muted">No item selected</p>
+                            ) : (
+                                <>
+                                    <div className="d-flex align-items-center gap-3 mb-2">
+                                        <img
+                                            src={`${global_vars.UPLOADS_URL}/item/${selectedItemData.image_path}`}
+                                            alt={selectedItemData.name}
+                                            className="img-thumbnail"
+                                            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                                        />
+                                        <div>
+                                            <h6 className="mb-1">{selectedItemData.name}</h6>
+                                            <small className="text-muted">{selectedItemData.description}</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="d-flex justify-content-between">
-                            <Button
-                                variant="outline-primary"
-                                size="sm"
-                                className="mt-2"
-                                onClick={handleModalItemShow}
-                                style={{ fontSize: '20px' }}
-                            >
-                                <PencilFill className="me-1" />
-                                Pick Item
-                            </Button>
-
-                            {selectedItemData && (
-                                <Button
-                                    variant="outline-danger"
-                                    size="sm"
-                                    className="mt-2"
-                                    onClick={handleRemoveItem}
-                                    style={{ fontSize: '20px' }}
-                                >
-                                    Remove
-                                </Button>
+                                </>
                             )}
+
+                            <div className="d-flex justify-content-between mt-3">
+                                <Button
+                                    variant="outline-primary"
+                                    size="sm"
+                                    onClick={handleModalItemShow}
+                                >
+                                    <PencilFill className="me-1" />
+                                    {selectedItemData ? 'Change Item' : 'Pick Item'}
+                                </Button>
+
+                                {selectedItemData && (
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm"
+                                        onClick={handleRemoveItem}
+                                    >
+                                        Remove
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </Col>
-                    <Col md={5} className="m-2">
-                        <h5>Ability</h5>
-                        {!selectedAbilityData && (
-                            <p className="text-muted">No ability selected</p>
-                        )}
-                        {selectedAbilityData && (
-                            <div className="d-flex align-items-center gap-3">
-                                <div>
-                                    <h4>{selectedAbilityData.name}</h4>
-                                    <p>{selectedAbilityData.description}</p>
-                                </div>
-                            </div>
-                        )}
 
-                        <Button
-                            variant="outline-primary"
-                            size="sm"
-                            className="mt-2"
-                            onClick={handleModalSelectedAbilityShow}
-                            style={{ fontSize: '20px' }}
-                        >
-                            <PencilFill className="me-1" />
-                            Pick Ability
-                        </Button>
-                        {selectedAbilityData && (
+                    {/* ABILITY CARD */}
+                    <Col md={6}>
+                        <div className="border rounded p-3 shadow-sm h-100">
+                            <h5 className="mb-3">Ability</h5>
+
+                            {!selectedAbilityData ? (
+                                <p className="text-muted">No ability selected</p>
+                            ) : (
+                                <div>
+                                    <h6 className="mb-1">{selectedAbilityData.name}</h6>
+                                    <small className="text-muted">{selectedAbilityData.description}</small>
+                                </div>
+                            )}
+
+                            <div className="d-flex justify-content-between mt-3">
                                 <Button
-                                    variant="outline-danger"
+                                    variant="outline-primary"
                                     size="sm"
-                                    className="mt-2"
-                                    onClick={handleRemoveAbility}
-                                    style={{ fontSize: '20px' }}>
-                                    Remove
+                                    onClick={handleModalSelectedAbilityShow}
+                                >
+                                    <PencilFill className="me-1" />
+                                    {selectedAbilityData ? 'Change Ability' : 'Pick Ability'}
                                 </Button>
-                        )}
+
+                                {selectedAbilityData && (
+                                    <Button
+                                        variant="outline-danger"
+                                        size="sm"
+                                        onClick={handleRemoveAbility}
+                                    >
+                                        Remove
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
                     </Col>
                 </Row>
             </div>
 
-            <Modal show={showModalItem} onHide={handleModalItemClose}>
+            {/* ITEM MODAL */}
+            <Modal show={showModalItem} onHide={handleModalItemClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Selecte the Item</Modal.Title>
+                    <Modal.Title>Select Item</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <SearchableComboBox<ItemDataDTO>
-                        endpoint={`${global_vars.API_URL}/items`}
+                        endpoint={`${global_vars.API_URL}/items/search`}
                         textField="name"
                         valueField="id"
                         folder_name="item"
@@ -330,29 +330,36 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
                             setSelectedItemData(item);
                         }}
                     />
-                    <Button className="btn btn-primary m-3" onClick={handleChangeItem}>Save</Button>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleChangeItem}>Save</Button>
+                </Modal.Footer>
             </Modal>
 
-            <Modal show={showModalSelectedAbility} onHide={handleModalSelectedAbiltyClose}>
+            {/* ABILITY MODAL */}
+            <Modal show={showModalSelectedAbility} onHide={handleModalSelectedAbiltyClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Selecte the Ability</Modal.Title>
+                    <Modal.Title>Select Ability</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CustomComboBox<AbilityDataDTO> 
+                    <CustomComboBox<AbilityDataDTO>
                         dataSource={possibleAbilities}
                         textField="name"
                         valueField="id"
-                        selectedValue={selectedAbilityData ? selectedAbilityData.id : ''}
+                        selectedValue={selectedAbilityData?.id ?? ''}
                         onChange={(value) => {
-                            //me dio flojera hacer otro component 
-                            setSelectedAbilityData(possibleAbilities.find(ability => ability.id === Number(value)) || null);
+                            setSelectedAbilityData(
+                                possibleAbilities.find((ability) => ability.id === Number(value)) || null
+                            );
                         }}
                     />
-                    <Button className="btn btn-primary m-3" onClick={handleChangeSelectedAbility}>Save</Button>
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleChangeSelectedAbility}>Save</Button>
+                </Modal.Footer>
             </Modal>
         </>
+
     )
 }
 

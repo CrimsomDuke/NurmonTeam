@@ -93,8 +93,14 @@ const IndividualMemberMovementComponent = (props : IndividualMemberMovementCompo
                         endpoint={`${global_vars.API_URL}/nurmon_movements/search/nurmon/${props.nurmonId}`}
                         textSelector={(item) => item.movement.name}
                         valueSelector={(item) => item.id}
+                        searchOnEmptyQuery={true}
                         folder_name="item"
                         placeholder="Select the movement"
+                        additionalFieldsSelectors={[
+                            (item) => `Type: ${item.movement.type?.name || "No Type"}`,
+                            (item) => `Power: ${item.movement.power}`,
+                            (item) => 'Category: ' + (item.movement.is_physical ? 'Physical' : 'Special'),
+                        ]}
                         onSelect={(item) => {
                             setNewSelectedNurmonMovement(item);
                             if(props.onMovementSelected) {

@@ -5,14 +5,17 @@ interface ExtendedSearchableComboBoxProps<T> {
   endpoint: string;
   textSelector : (item: T) => string;
   valueSelector : (item: T) => string | number;
+  searchOnEmptyQuery?: boolean;
   folder_name?: string;
   placeholder?: string;
   image_field?: keyof T;
+  additionalFieldsSelectors?: ((item : T) => string)[];
   onSelect: (item: T) => void;
 }
 
-const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, valueSelector,
+const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, valueSelector, searchOnEmptyQuery = false,
   placeholder = "Search...", image_field = 'image_path' as keyof T, folder_name = '',
+  additionalFieldsSelectors = [],
   onSelect }: ExtendedSearchableComboBoxProps<T>) => {
 
   const [query, setQuery] = useState('');
@@ -21,7 +24,7 @@ const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, v
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    if (query.trim().length === 0) {
+    if (query.trim().length === 0 && !searchOnEmptyQuery) {
       setResults([]);
       setShowDropdown(false);
       return;
@@ -85,6 +88,11 @@ const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, v
                         />  
                     )}
                     <p className="m-3">{textSelector(item) as string}</p>
+                    {additionalFieldsSelectors.map((fieldSelector : (item : T) => string, index : number) => (
+                        <p key={index} className="m-3">
+                            {fieldSelector(item)}
+                        </p>
+                    ))}
                 </div>
               </li>
             ))
