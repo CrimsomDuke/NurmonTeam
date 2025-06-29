@@ -11,6 +11,7 @@ import 'react-edit-text/dist/index.css';
 import { EditText } from "react-edit-text";
 import MemberItemAbilityComponent from "../../../components/main/MemberItemAbilityComponent";
 import MemberMovementsComponent from "../../../components/main/MemberMovementsComponent";
+import MemberStatsComponent from "../../../components/main/MemberStatsComponent";
 
 
 const TeamMemberView = () => {
@@ -136,7 +137,7 @@ const TeamMemberView = () => {
                     <div className="card-body">
                         <Row>
                             <Col md={5}>
-                                <EditText value={teamMemberName}  
+                                <EditText value={teamMemberName} className="card mb-3"
                                     onChange={(e) => {setTeamMemberName(e.target.value);}}
                                     onSave={updateTeamMemberName}
                                     showEditButton/>
@@ -160,12 +161,20 @@ const TeamMemberView = () => {
                                 />
                             </Col>
                         </Row>
-                        <Row>
+                        <Row className="m-3">
                             <Col md={12} className="mt-3">
                                 <MemberMovementsComponent
                                     memberId={teamMemberData?.id || 0}
                                     teamId={teamMemberData?.team_id || 0}
                                     nurmonId={teamMemberData?.nurmon_id || 0}
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <MemberStatsComponent 
+                                    memberObject={teamMemberData as TeamMemberDataDTO}    
+                                    onChange={() => fetchTeamMemberData()}
                                 />
                             </Col>
                         </Row>

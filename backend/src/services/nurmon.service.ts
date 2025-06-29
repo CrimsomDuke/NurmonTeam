@@ -143,6 +143,7 @@ class NurmonService {
 
             nurmon.name = nurmonData.name || nurmon.name;
             nurmon.image_path = nurmonData.image_path || nurmon.image_path;
+            nurmon.type_id = nurmonData.type_id || nurmon.type_id;
             nurmon.hp = nurmonData.hp || nurmon.hp;
             nurmon.def = nurmonData.def || nurmon.def;
             nurmon.attack = nurmonData.attack || nurmon.attack;

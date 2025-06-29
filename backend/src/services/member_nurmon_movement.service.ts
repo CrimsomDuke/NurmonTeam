@@ -196,7 +196,7 @@ class MemberNurmonMovementService {
             }
         });
 
-        if(existingMemberNurmonMovements.length > 4){
+        if(existingMemberNurmonMovements.length >= 4){
             throw new Error("A team member can only have a maximum of 4 nurmon movements");
         }
     }

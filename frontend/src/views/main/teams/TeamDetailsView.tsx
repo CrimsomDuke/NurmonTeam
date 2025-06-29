@@ -205,11 +205,6 @@ const TeamDetailsView = () => {
                                             <h5 className="card-title mb-1">{member.nickname || member.nurmon?.name}</h5>
                                             <p className="text-muted small mb-1">{member.nurmon?.type?.name || 'No Type'}</p>
                                             <p className="text-muted small">{member.nature?.name || 'No Nature'}</p>
-                                            <div className="mt-2">
-                                                <span className="badge bg-primary me-1">HP: {member.nurmon?.hp}</span>
-                                                <span className="badge bg-success me-1">ATK: {member.nurmon?.attack}</span>
-                                                <span className="badge bg-danger">SPD: {member.nurmon?.speed}</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </Link>
