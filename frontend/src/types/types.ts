@@ -66,6 +66,13 @@ export interface NurmonMovementDataDTO {
     movement: MovementDataDTO; // assuming relation populated
 }
 
+export interface MemberNurmonMovementDataDTO{
+    id: number;
+    team_member_id: number;
+    nurmon_movement_id: number;
+    nurmonMovement: NurmonMovementDataDTO; // assuming relation populated
+}
+
 export interface NatureDataDTO {
     id : number;
     name : string;

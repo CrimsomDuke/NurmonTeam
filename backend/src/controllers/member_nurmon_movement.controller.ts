@@ -1,6 +1,6 @@
 import { Request, RequestHandler, Response } from "express";
 import MemberNurmonMovementService from "../services/member_nurmon_movement.service";
-import { MemberNurmonMovementCreateDTO } from "../models/dtos/member_nurmon_movement.types";
+import { MemberNurmonMovementCreateDTO, MemberNurmonMovementUpdateWithMovementDTO } from "../models/dtos/member_nurmon_movement.types";
 
 
 class MemberNurmonMovementController {
@@ -69,6 +69,33 @@ class MemberNurmonMovementController {
             res.status(201).json(newMemberMovement);
         } catch (err) {
             console.error("Error creating member nurmon movement:", err);
+            res.status(500).json({ error: "Internal server error", data : (err as Error).message });
+        }
+    }
+
+    updateMemberNurmonMovement : RequestHandler = async (req : Request, res : Response) => {
+        const id = parseInt(req.params.id);
+        if (isNaN(id)) {
+            res.status(400).json({ error: "Invalid ID" });
+            return;
+        }
+        try {
+            const memberMovementData : MemberNurmonMovementCreateDTO = req.body;
+
+            const validationErrors = this.validateMemberNurmonMovementData(memberMovementData);
+            if (validationErrors) {
+                res.status(400).json({ error: "Validation failed", data: validationErrors });
+                return;
+            }
+
+            const updatedMemberMovement = await this.memberNurmonMovementService.updateMemberNurmonMovement(id, memberMovementData);
+            if (!updatedMemberMovement) {
+                res.status(404).json({ error: "Member nurmon movement not found" });
+                return;
+            }
+            res.status(200).json(updatedMemberMovement);
+        } catch (err) {
+            console.error("Error updating member nurmon movement:", err);
             res.status(500).json({ error: "Internal server error", data : (err as Error).message });
         }
     }

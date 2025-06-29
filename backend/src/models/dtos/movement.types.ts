@@ -1,3 +1,4 @@
+import { TypeDTO } from "./type.types";
 
 export interface MovementDTO{
     id : number;
@@ -5,6 +6,8 @@ export interface MovementDTO{
     power : number;
     is_physical : boolean;
     type_id : number;
+
+    type? : TypeDTO;
 }
 
 export interface MovementCreateDTO {

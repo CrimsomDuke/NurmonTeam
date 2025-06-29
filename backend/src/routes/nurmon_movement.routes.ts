@@ -12,5 +12,6 @@ module.exports = (app : Application, container : Container, middlewareProvider :
 
     app.get('/api/nurmon_movements/:id', controller.getNurmonMovementById);
     app.get('/api/nurmon_movements/nurmon/:nurmonId', controller.getNurmonMovementsByNurmonId);
+    app.get('/api/nurmon_movements/search/nurmon/:id', controller.getNurmonMovementsByNurmonIdForSearch);
     app.delete('/api/nurmon_movements/delete/:id', middlewareProvider.isAdminMiddleware, controller.deleteNurmonMovement);
 }

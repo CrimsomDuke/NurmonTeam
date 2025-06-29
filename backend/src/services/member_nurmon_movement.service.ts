@@ -1,5 +1,5 @@
 import { Database } from "../models";
-import { MemberNurmonMovementCreateDTO } from "../models/dtos/member_nurmon_movement.types";
+import { MemberNurmonMovementCreateDTO, MemberNurmonMovementUpdateWithMovementDTO } from "../models/dtos/member_nurmon_movement.types";
 
 
 class MemberNurmonMovementService {
@@ -93,7 +93,13 @@ class MemberNurmonMovementService {
                         include: [
                             {
                                 model : this.db.Movement,
-                                as: 'movement' 
+                                as: 'movement',
+                                include: [
+                                    {
+                                        model: this.db.Type,
+                                        as: 'type'
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -107,6 +113,39 @@ class MemberNurmonMovementService {
         }
     }
 
+    async updateMemberNurmonMovement(id: number, memberNurmonMovementData: MemberNurmonMovementCreateDTO){
+        try {
+            const memberMovement = await this.db.MemberNurmonMovement.findByPk(id);
+            if (!memberMovement) {
+                throw new Error("Member nurmon movement not found");
+            }
+
+            const nurmonMovement = await this.db.NurmonMovement.findByPk(memberNurmonMovementData.nurmon_movement_id);
+            if (!nurmonMovement) {
+                throw new Error("Nurmon movement not found");
+            }
+
+            const teamMember = await this.db.TeamMember.findByPk(memberNurmonMovementData.team_member_id);
+            if (!teamMember) {
+                throw new Error("Team member not found");
+            }
+
+            // SI LA MIERDA ESTA NO PERTENECE AL PUTO NURMON
+            if (teamMember.nurmon_id !== nurmonMovement.nurmon_id) {
+                throw new Error("Nurmon movement does not belong to the team member's nurmon");
+            }
+
+            await this.validateMemberNurmonMovementData(memberNurmonMovementData);
+
+            // Update the member nurmon movement
+            await memberMovement.update(memberNurmonMovementData);
+            return memberMovement;
+        } catch (err) {
+            console.error("Error updating member nurmon movement:", err);
+            throw err;
+        }
+    }
+    
     async createMemberNurmonMovement(memberNurmonMovementData : MemberNurmonMovementCreateDTO){
         try {
             await this.validateMemberNurmonMovementData(memberNurmonMovementData);

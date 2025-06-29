@@ -1,6 +1,6 @@
 import { Database } from "../models";
 import { MovementCreateDTO, MovementUpdateDTO } from "../models/dtos/movement.types";
-
+import { Op } from "sequelize";
 
 class MovementService {
 
@@ -64,6 +64,78 @@ class MovementService {
             return movement;
         } catch (error) {
             console.error("Error fetching movement by name:", error);
+            throw error;
+        }
+    }
+    
+    getPossibleMovementsByNurmonIdForSearch = async (nurmonId : number, searchTerm : string) => {
+        try{
+            const nurmonMovements = await this.db.NurmonMovement.findAll({
+                where: { nurmon_id: nurmonId },
+                include: [
+                    {
+                        model: this.db.Movement,
+                        as: 'movement',
+                        include: [
+                            {
+                                model: this.db.Type,
+                                as: 'type'
+                            }
+                        ],
+                        where : {
+                            name : {
+                                [Op.like]: `%${searchTerm}%`
+                            }
+                        }
+                    }
+                ]
+            });
+
+            const possibleMovements =  nurmonMovements.map(nurmonMovement => nurmonMovement.movement);
+            return possibleMovements;
+        }catch(err){
+            console.error("Error fetching possible movements by team member ID:", err);
+            throw err;
+        }
+    }
+
+    getCurrentMovementsByTeamMemberId = async (teamMemberId : number) => {
+        try {
+            const teamMember = await this.db.TeamMember.findByPk(teamMemberId, {
+                include: [
+                    {
+                        model: this.db.MemberNurmonMovement,
+                        as: 'member_nurmon_movements',
+                        include: [
+                            {
+                                model: this.db.NurmonMovement,
+                                as: 'nurmonMovement',
+                                include: [
+                                    {
+                                        model: this.db.Movement,
+                                        as: 'movement',
+                                        include: [
+                                            {
+                                                model: this.db.Type,
+                                                as: 'type'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            if (!teamMember) {
+                return null;
+            }
+
+            const currentMovements =teamMember.member_nurmon_movements.map(nurmonMovement => nurmonMovement.nurmonMovement.movement);
+            return currentMovements;
+        } catch (error) {
+            console.error("Error fetching current movements by team member ID:", error);
             throw error;
         }
     }

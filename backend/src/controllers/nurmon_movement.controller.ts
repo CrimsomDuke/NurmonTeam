@@ -60,6 +60,24 @@ class NurmonMovementController {
         }
     }
 
+    getNurmonMovementsByNurmonIdForSearch : RequestHandler = async (req : Request, res : Response) => {
+        const nurmonId = parseInt(req.params.id);
+        if (isNaN(nurmonId)) {
+            res.status(400).json({ error: "Invalid Nurmon ID" });
+            return;
+        }
+
+        const searchTerm = req.query.term as string || "";
+
+        try {
+            const movements = await this.nurmonMovementService.getNurmonMovementsForSearch(nurmonId, searchTerm);
+            res.status(200).json(movements);
+        } catch (err) {
+            console.error("Error fetching Nurmon movements for search:", err);
+            res.status(500).json({ error: "Error retrieving Nurmon movements for search", data : (err as Error).message });
+        }
+    }
+
     createNurmonMovement : RequestHandler = async (req : Request, res : Response) => {
         const nurmonMovementData : NurmonMovementCreateDTO = req.body;
 

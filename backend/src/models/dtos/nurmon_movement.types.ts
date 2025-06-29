@@ -1,3 +1,4 @@
+import { MovementDTO } from "./movement.types";
 
 
 export interface NurmonMovementDTO {

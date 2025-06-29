@@ -10,6 +10,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import 'react-edit-text/dist/index.css';
 import { EditText } from "react-edit-text";
 import MemberItemAbilityComponent from "../../../components/main/MemberItemAbilityComponent";
+import MemberMovementsComponent from "../../../components/main/MemberMovementsComponent";
 
 
 const TeamMemberView = () => {
@@ -132,7 +133,7 @@ const TeamMemberView = () => {
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
                 <div className="card mt-3">
-                    <div className="card-body d-flex">
+                    <div className="card-body">
                         <Row>
                             <Col md={5}>
                                 <EditText value={teamMemberName}  
@@ -140,8 +141,10 @@ const TeamMemberView = () => {
                                     onSave={updateTeamMemberName}
                                     showEditButton/>
                                 {teamMemberData?.nurmon.image_path && (
-                                    <img src={`${global_vars.UPLOADS_URL}/nurmon/${teamMemberData.nurmon.image_path}?t=${new Date().getTime()}`} 
-                                        alt={teamMemberName} className="img-fluid " />
+                                    <div className="d-flex justify-content-center mb-3">
+                                        <img src={`${global_vars.UPLOADS_URL}/nurmon/${teamMemberData.nurmon.image_path}?t=${new Date().getTime()}`} 
+                                        alt={teamMemberName} className="img-fluid" style={{ maxWidth: "300px"  }} />
+                                    </div>
                                 )}
                                 <div className="text-center">
                                     <h4>Type: {teamMemberData?.nurmon.type?.name}</h4>
@@ -154,6 +157,15 @@ const TeamMemberView = () => {
                                     nurmonId={teamMemberData?.nurmon_id || 0}
                                     itemId={teamMemberData?.item_id || 0}
                                     selectedAbilityId={teamMemberData?.selected_ability_id || 0} 
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12} className="mt-3">
+                                <MemberMovementsComponent
+                                    memberId={teamMemberData?.id || 0}
+                                    teamId={teamMemberData?.team_id || 0}
+                                    nurmonId={teamMemberData?.nurmon_id || 0}
                                 />
                             </Col>
                         </Row>

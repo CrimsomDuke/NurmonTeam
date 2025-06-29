@@ -145,6 +145,37 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
         }
     }
 
+    const handleRemoveAbility = async () => {
+        if(!selectedAbilityData){
+            alert("Please select an ability to remove.");
+            return;
+        }
+
+        const body = {
+            "team_id": props.teamId,
+            "nurmon_id": props.nurmonId,
+            "selected_ability_id": 0 // Le puse a la API que si recibe 0, se mata la ability
+        }
+
+        const response = await fetch(`${global_vars.API_URL}/team_members/update/${props.teamMemberId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            console.log(data);
+            setSelectedAbilityData(null);
+        } else {
+            console.error("Error removing ability:", data);
+            alert("Error removing ability: " + (data.data || data.error));
+        }
+    }
+
     const fetchAbilityData = async (abilityId: number) => {
         const response = await fetch(`${global_vars.API_URL}/abilities/${abilityId}`, {
             method: 'GET',
@@ -196,22 +227,24 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
         <>
             <div className="d-flex align-items-center">
                 <Row className="align-items-center mb-3">
-                    <Col className="m-2">
+                    <Col md={5} className="m-2 h-100">
                         <h5>Item</h5>
                         {!selectedItemData && (
                             <p className="text-muted">No item selected</p>
                         )}
                         {selectedItemData?.image_path && (
-                            <div className="d-flex align-items-center gap-3">
-                                <img
-                                    src={`${global_vars.UPLOADS_URL}/item/${selectedItemData.image_path}`}
-                                    alt={selectedItemData.name}
-                                    className="img-thumbnail"
-                                    style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-                                />
+                            <div className="align-items-center gap-3">
+                                <div className="d-flex align-items-center gap-3">
+                                    <img
+                                        src={`${global_vars.UPLOADS_URL}/item/${selectedItemData.image_path}`}
+                                        alt={selectedItemData.name}
+                                        className="img-thumbnail"
+                                        style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                                    />
+                                    <h4>{selectedItemData.name}</h4>
+                                </div>
                                 <div>
                                     <div className="fw-semibold">
-                                        <h4>{selectedItemData.name}</h4>
                                         <p>{selectedItemData.description}</p>
                                     </div>
                                 </div>
@@ -243,7 +276,7 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
                             )}
                         </div>
                     </Col>
-                    <Col className="m-2">
+                    <Col md={5} className="m-2">
                         <h5>Ability</h5>
                         {!selectedAbilityData && (
                             <p className="text-muted">No ability selected</p>
@@ -267,6 +300,16 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
                             <PencilFill className="me-1" />
                             Pick Ability
                         </Button>
+                        {selectedAbilityData && (
+                                <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    className="mt-2"
+                                    onClick={handleRemoveAbility}
+                                    style={{ fontSize: '20px' }}>
+                                    Remove
+                                </Button>
+                        )}
                     </Col>
                 </Row>
             </div>

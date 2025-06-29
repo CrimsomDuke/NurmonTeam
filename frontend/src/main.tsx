@@ -40,7 +40,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/admin/movements/form/' element={<MovementFormView />} />
           <Route path='/admin/movements/form/:id' element={<MovementFormView />} />
 
-          {/* User management routes */}
  
           {/* Main application route */}
           <Route path="/" element={<MainView />} />

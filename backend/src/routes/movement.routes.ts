@@ -12,6 +12,8 @@ module.exports = (app : Application, container : Container, middlewareProvider :
 
     app.get('/api/movements/:id', controller.getMovementById);
     app.get('/api/movements/name/:name', controller.getMovementByName);
+    app.get('/api/movements/team_member/:id', controller.getCurrentMovementsByTeamMemberId);
+    app.get('/api/movements/search/nurmon/:id', controller.getPossibleMovementsByNurmonIdForSearch);
     app.put('/api/movements/update/:id', middlewareProvider.isAdminMiddleware, controller.updateMovement);
     app.delete('/api/movements/delete/:id', middlewareProvider.isAdminMiddleware, controller.deleteMovement);
 }

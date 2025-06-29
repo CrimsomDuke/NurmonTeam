@@ -1,6 +1,6 @@
 import { Database } from "../models";
 import { NurmonMovementCreateDTO, NurmonMovementUpdateDTO } from "../models/dtos/nurmon_movement.types";
-
+import { Op } from "sequelize";
 
 class NurmonMovementService {
     private readonly db : Database;
@@ -86,6 +86,37 @@ class NurmonMovementService {
             return movements;
         }catch(error){
             console.error("Error fetching Nurmon movements by Nurmon ID:", error);
+            throw error;
+        }
+    }
+
+    async getNurmonMovementsForSearch(nurmonId : number, searchTerm: string){
+        try{
+            const movements = await this.db.NurmonMovement.findAll({
+                where: { nurmon_id: nurmonId },
+                include: [
+                    {
+                        model: this.db.Movement,
+                        as: 'movement',
+                        where : {
+                            name : {
+                                [Op.like]: `%${searchTerm}%`
+                            }
+                        },
+                        include: [
+                            {
+                                model: this.db.Type,
+                                as: 'type',
+                                attributes: ['id', 'name']
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            return movements;
+        }catch(error){
+            console.error("Error fetching Nurmon movements for search:", error);
             throw error;
         }
     }

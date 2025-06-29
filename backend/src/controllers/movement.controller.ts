@@ -59,6 +59,41 @@ class MovementController {
         }
     }
 
+    getPossibleMovementsByNurmonIdForSearch : RequestHandler = async (req : Request, res : Response) => {
+        const nurmonId = parseInt(req.params.id);
+        const searchTerm = req.query.term as string;
+        if (isNaN(nurmonId)) {
+            res.status(400).json({ error: "Invalid nurmon ID" });
+            return;
+        }
+
+        try{
+            const movements = await this.movementService.getPossibleMovementsByNurmonIdForSearch(nurmonId, searchTerm);
+            res.status(200).json(movements);
+            return;
+        }catch(err){
+            console.error("Error fetching possible movements by nurmon ID for search:", err);
+            res.status(500).json({ error: "Error fetching possible movements", data : (err as Error).message });
+        }
+
+    }
+
+    getCurrentMovementsByTeamMemberId : RequestHandler = async (req : Request, res : Response) => {
+        const teamMemberId = parseInt(req.params.id);
+        if (isNaN(teamMemberId)) {
+            res.status(400).json({ error: "Invalid team member ID" });
+            return;
+        }
+
+        try {
+            const movements = await this.movementService.getCurrentMovementsByTeamMemberId(teamMemberId);
+            res.status(200).json(movements);
+        } catch (err) {
+            console.error("Error fetching current movements by team member ID:", err);
+            res.status(500).json({ error: "Error fetching current movements", data : (err as Error).message });
+        }
+    }
+
     createMovement : RequestHandler = async (req : Request, res : Response) => {         
         try {
 
