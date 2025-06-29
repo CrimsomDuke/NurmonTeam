@@ -150,6 +150,13 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
     }
 
     const handleUpdateMemberStats = async () => {
+
+        if(memberHpEV + memberAttackEV + memberDefenseEV + memberSpecialAttackEV +
+            memberSpecialDefenseEV + memberSpeedEV > 508){
+            alert("The total EVs cannot exceed 508. Please adjust the values.");
+            return;
+        }
+
         const body = {
             team_id : memberObject.team_id,
             nurmon_id : memberObject.nurmon_id,
