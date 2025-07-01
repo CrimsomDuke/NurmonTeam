@@ -75,6 +75,7 @@ const IndividualMemberMovementComponent = (props : IndividualMemberMovementCompo
                         <p><strong>Name:</strong> {props.nurmonMovementObject.movement.name}</p>
                         <p><strong>Type:</strong> {props.nurmonMovementObject.movement.type?.name}</p>
                         <p><strong>Power:</strong> {props.nurmonMovementObject.movement.power}</p>
+                        <p><strong>Category:</strong> {props.nurmonMovementObject.movement.is_physical ? 'Physical' : 'Special'} </p>
                     </>
                 ) : (
                     <p>No movement selected.</p>

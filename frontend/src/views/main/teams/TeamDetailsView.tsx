@@ -48,36 +48,36 @@ const TeamDetailsView = () => {
         }
     }, [teamName]);
 
-    const handleAddNurmonToTeam = async (e : React.FormEvent<HTMLFormElement>) => {
+    const handleAddNurmonToTeam = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!selectedNurmonId) {
             setErrorMessage("Please select a Nurmon to add to the team.");
             return;
         }
 
-        if(!params.id){
+        if (!params.id) {
             setErrorMessage("Team ID is not available.");
             return;
         }
 
-        try{
+        try {
             const teamMemberData = {
                 team_id: parseInt(params.id!),
                 nurmon_id: selectedNurmonId,
 
-                hp_ev : 0,
-                attack_ev : 0 ,
-                def_ev : 0,
-                special_attack_ev : 0,
-                special_def_ev : 0,
-                speed_ev : 0,
+                hp_ev: 0,
+                attack_ev: 0,
+                def_ev: 0,
+                special_attack_ev: 0,
+                special_def_ev: 0,
+                speed_ev: 0,
 
-                hp_iv : 0,
-                attack_iv : 0,
-                def_iv : 0,
-                special_attack_iv : 0,
-                special_def_iv : 0,
-                speed_iv : 0
+                hp_iv: 0,
+                attack_iv: 0,
+                def_iv: 0,
+                special_attack_iv: 0,
+                special_def_iv: 0,
+                speed_iv: 0
             }
 
             const response = await fetch(`${global_vars.API_URL}/team_members/create`, {
@@ -98,32 +98,32 @@ const TeamDetailsView = () => {
                 console.error(data);
                 setErrorMessage(data.data || data.message || 'Failed to add Nurmon to team');
             }
-        }catch(err){
+        } catch (err) {
             console.error(err);
             setErrorMessage("An unexpected error occurred while adding Nurmon to the team.");
         }
     }
 
     const handleDelete = async () => {
-        if(!params.id){
+        if (!params.id) {
             setErrorMessage("Can't delete a team without ID");
             return;
         }
 
         const response = await fetch(`${global_vars.API_URL}/teams/delete/${params.id}`, {
-            method : 'DELETE',
-            headers : {
-                'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${getToken()}`
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             }
         });
 
         const data = await response.json();
 
-        if(response.ok){
+        if (response.ok) {
             navigate('/');
             console.log("Team deleted successfully");
-        }else{
+        } else {
             setErrorMessage(data.data || data.message || 'Failed to delete team');
             console.error(data);
         }
@@ -180,60 +180,76 @@ const TeamDetailsView = () => {
     return (
         <>
             <CustomNavBar />
-            <main className="container">
-                <h1 className="text-center">Team Details</h1>
-                <Link to="/" className="btn btn-secondary mb-3">Back to my teams</Link>
-                {errorMessage && (<p className="text-danger">{errorMessage}</p>)}
-                <div className="container py-4">
+
+            <main className="container py-5">
+                <div className="text-center mb-4">
+                    <h1 className="fw-bold">Team Details</h1>
+                    <Link to="/" className="btn btn-outline-secondary mt-2">← Back to My Teams</Link>
+                </div>
+
+                {errorMessage && (
+                    <div className="alert alert-danger text-center">{errorMessage}</div>
+                )}
+
+                <div className="bg-light p-4 rounded shadow-sm">
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h2 className="fw-bold">{teamName}</h2>
+                        <h2 className="fw-semibold mb-0">{teamName}</h2>
+                        {teamMembers?.length < 6 && (
+                            <div>
+                                <button className="btn btn-sm btn-primary me-2" onClick={handleShow}>
+                                    + Add Team Member
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() =>
+                                        confirm("Delete Team?") ? handleDelete() : console.log("Deletion cancelled")
+                                    }
+                                >
+                                    x Delete Team
+                                </button>
+                            </div>
+                        )}
                     </div>
 
-                    {teamMembers && teamMembers.length >= 0 ? (
-                        <div className="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
+                    {teamMembers?.length > 0 ? (
+                        <div className="row row-cols-1 row-cols-md-3 g-4">
                             {teamMembers.map((member) => (
-                                <Link key={member.id} className="team-container col text-decoration-none"
-                                    to={`/team_member/${member.id}`}>
-                                    <div className="card h-100 shadow-sm border-0">
-                                        <img
-                                            src={`${global_vars.UPLOADS_URL}/nurmon/${member.nurmon?.image_path}`}
-                                            className="card-img-top mx-auto d-block mt-3 rounded-circle"
-                                            alt={member.nurmon?.name}
-                                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                                        />
-                                        <div className="card-body text-center">
-                                            <h5 className="card-title mb-1">{member.nickname || member.nurmon?.name}</h5>
-                                            <p className="text-muted small mb-1">{member.nurmon?.type?.name || 'No Type'}</p>
-                                            <p className="text-muted small">{member.nature?.name || 'No Nature'}</p>
+                                <div className="col team-container" key={member.id}>
+                                    <Link to={`/team_member/${member.id}`} className="text-decoration-none text-dark">
+                                        <div className="card border-0 shadow-sm h-100 text-center hover-shadow">
+                                            <div className="pt-3">
+                                                <img
+                                                    src={`${global_vars.UPLOADS_URL}/nurmon/${member.nurmon?.image_path}`}
+                                                    alt={member.nurmon?.name}
+                                                    className="rounded-circle border"
+                                                    style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                                                />
+                                            </div>
+                                            <div className="card-body">
+                                                <h5 className="card-title">{member.nickname || member.nurmon?.name}</h5>
+                                                <p className="text-muted small mb-1">{member.nurmon?.type?.name || 'No Type'}</p>
+                                                <p className="text-muted small">{member.nature?.name || 'No Nature'}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-center text-muted">This team has no members.</p>
-                    )}
-
-                    {teamMembers &&teamMembers.length < 6 && (
-                        <div className="d-flex justify-content-between">
-                            <button className="btn btn-primary m-3" onClick={handleShow}>Add Team Member</button>  
-                            <button className="btn btn-danger m-3"
-                                 onClick={() => confirm('Delete Team?') ?  handleDelete() : console.log('Deletion cancelled')}>
-                                Delete Team
-                            </button>
-                        </div>     
+                        <p className="text-center text-muted mt-4">This team has no members yet.</p>
                     )}
                 </div>
             </main>
 
-            <Modal show={showModal} onHide={handleClose}>
+            {/* Modal for adding Nurmon */}
+            <Modal show={showModal} onHide={handleClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Adding Nurmon to Team</Modal.Title>
+                    <Modal.Title>Add Nurmon to Team</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleAddNurmonToTeam}>
-                        <Form.Group>
-                            <Form.Label>Select the Nurmon</Form.Label>
+                        <Form.Group className="mb-3">
+                            <Form.Label className="fw-semibold">Select a Nurmon</Form.Label>
                             <SearchableComboBox
                                 endpoint={`${global_vars.API_URL}/nurmons/search`}
                                 textField="name"
@@ -241,20 +257,19 @@ const TeamDetailsView = () => {
                                 folder_name="nurmon"
                                 image_field="image_path"
                                 placeholder="Search for a Nurmon"
-                                onSelect={(item) => {
-                                    setSelectedNurmonId(item.id);
-                                }}
+                                onSelect={(item) => setSelectedNurmonId(item.id)}
                             />
                         </Form.Group>
-                        <Modal.Footer>
-                            <Form.Group>
-                                <button type="submit" className="btn btn-primary">Add Nurmon to Team</button>
-                            </Form.Group>
-                        </Modal.Footer>
+                        <div className="d-flex justify-content-end">
+                            <button type="submit" className="btn btn-success">
+                                Add to Team
+                            </button>
+                        </div>
                     </Form>
                 </Modal.Body>
             </Modal>
         </>
+
     );
 }
 

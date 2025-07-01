@@ -135,7 +135,7 @@ class MemberNurmonMovementService {
                 throw new Error("Nurmon movement does not belong to the team member's nurmon");
             }
 
-            await this.validateMemberNurmonMovementData(memberNurmonMovementData);
+            await this.validateMemberNurmonMovementData(memberNurmonMovementData, "update");
 
             // Update the member nurmon movement
             await memberMovement.update(memberNurmonMovementData);
@@ -148,7 +148,7 @@ class MemberNurmonMovementService {
     
     async createMemberNurmonMovement(memberNurmonMovementData : MemberNurmonMovementCreateDTO){
         try {
-            await this.validateMemberNurmonMovementData(memberNurmonMovementData);
+            await this.validateMemberNurmonMovementData(memberNurmonMovementData, "create");
 
             const memberMovement = await this.db.MemberNurmonMovement.create(memberNurmonMovementData);
             return memberMovement;
@@ -173,7 +173,7 @@ class MemberNurmonMovementService {
         }
     }
     
-    private async validateMemberNurmonMovementData(data: MemberNurmonMovementCreateDTO) {
+    private async validateMemberNurmonMovementData(data: MemberNurmonMovementCreateDTO, operationType : string) {
 
         const nurmonMovement = await this.db.NurmonMovement.findByPk(data.nurmon_movement_id);
         if (!nurmonMovement) {
@@ -196,7 +196,7 @@ class MemberNurmonMovementService {
             }
         });
 
-        if(existingMemberNurmonMovements.length >= 4){
+        if(existingMemberNurmonMovements.length >= 4 && operationType === "create") {
             throw new Error("A team member can only have a maximum of 4 nurmon movements");
         }
     }

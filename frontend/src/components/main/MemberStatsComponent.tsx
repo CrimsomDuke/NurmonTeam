@@ -1,4 +1,4 @@
-import { Col, ProgressBar, Row } from "react-bootstrap";
+import { Form, ProgressBar, Table } from "react-bootstrap";
 import type { NatureDataDTO, TeamMemberDataDTO } from "../../types/types";
 import { useEffect, useState } from "react";
 import global_vars from "../../../global/global_vars";
@@ -9,7 +9,7 @@ import { calculateStatsFormularForHp, calculateStatsFormularForOtherStats } from
 
 interface MemberStatsComponentProps {
     memberObject: TeamMemberDataDTO;
-    onChange ?: () => void;
+    onChange?: () => void;
 }
 
 const MemberStatsComponent = (props: MemberStatsComponentProps) => {
@@ -50,7 +50,7 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
             setMemberSpecialAttackEV(props.memberObject.special_attack_ev);
             setMemberSpecialDefenseEV(props.memberObject.special_def_ev);
             setMemberSpeedEV(props.memberObject.speed_ev);
-            
+
             setMemberHpIV(props.memberObject.hp_iv);
             setMemberAttackIV(props.memberObject.attack_iv);
             setMemberDefenseIV(props.memberObject.def_iv);
@@ -73,61 +73,61 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
 
     const calculateTotalAttack = () => {
         return calculateStatsFormularForOtherStats(memberObject.nurmon.attack, 100, memberAttackIV, memberAttackEV,
-             getSelectedNature() ? getSelectedNature()?.attack_multiplier as number : 1);
+            getSelectedNature() ? getSelectedNature()?.attack_multiplier as number : 1);
     }
 
     const calculateTotalDefense = () => {
         return calculateStatsFormularForOtherStats(memberObject.nurmon.def, 100, memberDefenseIV, memberDefenseEV,
-             getSelectedNature() ? getSelectedNature()?.def_multiplier as number : 1);
+            getSelectedNature() ? getSelectedNature()?.def_multiplier as number : 1);
     }
 
     const calculateTotalSpecialAttack = () => {
         return calculateStatsFormularForOtherStats(memberObject.nurmon.special_attack, 100, memberSpecialAttackIV, memberSpecialAttackEV,
-             getSelectedNature() ? getSelectedNature()?.special_attack_multiplier as number : 1);
+            getSelectedNature() ? getSelectedNature()?.special_attack_multiplier as number : 1);
     }
 
     const calculateTotalSpecialDefense = () => {
         return calculateStatsFormularForOtherStats(memberObject.nurmon.special_def, 100, memberSpecialDefenseIV, memberSpecialDefenseEV,
-             getSelectedNature() ? getSelectedNature()?.special_def_multiplier as number : 1);
+            getSelectedNature() ? getSelectedNature()?.special_def_multiplier as number : 1);
     }
 
     const calculateTotalSpeed = () => {
         return calculateStatsFormularForOtherStats(memberObject.nurmon.speed, 100, memberSpeedIV, memberSpeedEV,
-             getSelectedNature() ? getSelectedNature()?.speed_multiplier as number : 1);
+            getSelectedNature() ? getSelectedNature()?.speed_multiplier as number : 1);
     }
 
     // PA EVITAR QUE LOS USUARIOS NDE MIERDA PONGA NUMORES MAYORES A LOS PERMITIDOS
     useEffect(() => {
-        if(memberAttackEV < 0) setMemberAttackEV(0);
-        if(memberDefenseEV < 0) setMemberDefenseEV(0);
-        if(memberHpEV < 0) setMemberHpEV(0);
-        if(memberSpecialAttackEV < 0) setMemberSpecialAttackEV(0);
-        if(memberSpecialDefenseEV < 0) setMemberSpecialDefenseEV(0);
-        if(memberSpeedEV < 0) setMemberSpeedEV(0);
-        if(memberAttackIV < 0) setMemberAttackIV(0);
-        if(memberDefenseIV < 0) setMemberDefenseIV(0);
-        if(memberHpIV < 0) setMemberHpIV(0);
-        if(memberSpecialAttackIV < 0) setMemberSpecialAttackIV(0);
-        if(memberSpecialDefenseIV < 0) setMemberSpecialDefenseIV(0);
-        if(memberSpeedIV < 0) setMemberSpeedIV(0);
-        if(memberAttackEV > 256) setMemberAttackEV(256);
-        if(memberDefenseEV > 256) setMemberDefenseEV(256);
-        if(memberHpEV > 256) setMemberHpEV(256);
-        if(memberSpecialAttackEV > 256) setMemberSpecialAttackEV(256);
-        if(memberSpecialDefenseEV > 256) setMemberSpecialDefenseEV(256);
-        if(memberSpeedEV > 256) setMemberSpeedEV(256);
-        if(memberAttackIV > 31) setMemberAttackIV(31);
-        if(memberDefenseIV > 31) setMemberDefenseIV(31);
-        if(memberHpIV > 31) setMemberHpIV(31);
-        if(memberSpecialAttackIV > 31) setMemberSpecialAttackIV(31);
-        if(memberSpecialDefenseIV > 31) setMemberSpecialDefenseIV(31);
-        if(memberSpeedIV > 31) setMemberSpeedIV(31);
+        if (memberAttackEV < 0) setMemberAttackEV(0);
+        if (memberDefenseEV < 0) setMemberDefenseEV(0);
+        if (memberHpEV < 0) setMemberHpEV(0);
+        if (memberSpecialAttackEV < 0) setMemberSpecialAttackEV(0);
+        if (memberSpecialDefenseEV < 0) setMemberSpecialDefenseEV(0);
+        if (memberSpeedEV < 0) setMemberSpeedEV(0);
+        if (memberAttackIV < 0) setMemberAttackIV(0);
+        if (memberDefenseIV < 0) setMemberDefenseIV(0);
+        if (memberHpIV < 0) setMemberHpIV(0);
+        if (memberSpecialAttackIV < 0) setMemberSpecialAttackIV(0);
+        if (memberSpecialDefenseIV < 0) setMemberSpecialDefenseIV(0);
+        if (memberSpeedIV < 0) setMemberSpeedIV(0);
+        if (memberAttackEV > 256) setMemberAttackEV(256);
+        if (memberDefenseEV > 256) setMemberDefenseEV(256);
+        if (memberHpEV > 256) setMemberHpEV(256);
+        if (memberSpecialAttackEV > 256) setMemberSpecialAttackEV(256);
+        if (memberSpecialDefenseEV > 256) setMemberSpecialDefenseEV(256);
+        if (memberSpeedEV > 256) setMemberSpeedEV(256);
+        if (memberAttackIV > 31) setMemberAttackIV(31);
+        if (memberDefenseIV > 31) setMemberDefenseIV(31);
+        if (memberHpIV > 31) setMemberHpIV(31);
+        if (memberSpecialAttackIV > 31) setMemberSpecialAttackIV(31);
+        if (memberSpecialDefenseIV > 31) setMemberSpecialDefenseIV(31);
+        if (memberSpeedIV > 31) setMemberSpeedIV(31);
     }, [memberAttackEV, memberAttackIV, memberDefenseEV, memberDefenseIV, memberHpEV, memberHpIV,
         memberSpecialAttackEV, memberSpecialAttackIV, memberSpecialDefenseEV, memberSpecialDefenseIV,
         memberSpeedEV, memberSpeedIV, selectedNatureId]);
 
     const fetchNatures = async () => {
-        try{
+        try {
             const response = await fetch(`${global_vars.API_URL}/natures`, {
                 method: 'GET',
                 headers: {
@@ -144,7 +144,7 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
                 alert("Failed to fetch natures. Please try again later.");
             }
 
-        }catch(err){
+        } catch (err) {
             console.error("Error fetching natures:", err);
             alert("Failed to fetch natures. Please try again later. ");
         }
@@ -152,15 +152,15 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
 
     const handleUpdateMemberStats = async () => {
 
-        if(memberHpEV + memberAttackEV + memberDefenseEV + memberSpecialAttackEV +
-            memberSpecialDefenseEV + memberSpeedEV > 508){
+        if (memberHpEV + memberAttackEV + memberDefenseEV + memberSpecialAttackEV +
+            memberSpecialDefenseEV + memberSpeedEV > 508) {
             alert("The total EVs cannot exceed 508. Please adjust the values.");
             return;
         }
 
         const body = {
-            team_id : memberObject.team_id,
-            nurmon_id : memberObject.nurmon_id,
+            team_id: memberObject.team_id,
+            nurmon_id: memberObject.nurmon_id,
             hp_ev: memberHpEV,
             attack_ev: memberAttackEV,
             def_ev: memberDefenseEV,
@@ -176,7 +176,7 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
             nature_id: selectedNatureId ? selectedNatureId : null
         }
 
-        try{
+        try {
             const response = await fetch(`${global_vars.API_URL}/team_members/update/${memberObject.id}`, {
                 method: 'PUT',
                 headers: {
@@ -195,174 +195,95 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
                 console.error("Failed to update member stats:", data);
                 alert("Failed to update member stats. Please try again later.");
             }
-        }catch(err){
+        } catch (err) {
             console.error("Error updating member stats:", err);
             alert("Failed to update member stats. Please try again later. ");
         }
     }
 
     return (
-        <div>
-            <div className="card mb-3">
-                <div className="card-body m-2">
-                    <h4>Stats</h4>
-                    {memberObject && (
-                        <div>
-                            <Row className="mb-3">
-                                <Col><strong>Stat</strong></Col>
-                                <Col><strong>Base</strong></Col>
-                                <Col><strong>EVs</strong></Col>
-                                <Col><strong>IVs</strong></Col>
-                                <Col md={4}><strong>Bar</strong></Col>
-                                <Col><strong>Total</strong></Col>
-                            </Row>
-                            <Row>
-                                <Col>HP</Col>
-                                <Col>{memberObject.nurmon.hp}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256} 
-                                        value={memberHpEV} 
-                                        onChange={(e) => setMemberHpEV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31} 
-                                        value={memberHpIV}
-                                        onChange={(e) => setMemberHpIV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalHP()} max={200} />
-                                </Col>
-                                <Col>
-                                    {calculateTotalHP()}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>Attack</Col>
-                                <Col>{memberObject.nurmon.attack}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256} 
-                                        value={memberAttackEV}
-                                        onChange={(e) => setMemberAttackEV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31} 
-                                        value={memberAttackIV}
-                                        onChange={(e) => setMemberAttackIV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalAttack()} max={200} />
-                                </Col>
-                                <Col>{calculateTotalAttack()}</Col>
-                            </Row>
-                            <Row>
-                                <Col>Defense</Col>
-                                <Col>{memberObject.nurmon.def}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256} 
-                                        value={memberDefenseEV}
-                                        onChange={(e) => setMemberDefenseEV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31} 
-                                        value={memberDefenseIV} 
-                                        onChange={(e) => setMemberDefenseIV(parseInt(e.target.value))} />
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalDefense()} max={200}/>
-                                </Col>
-                                <Col>{calculateTotalDefense()}</Col>
-                            </Row>
-                            <Row>
-                                <Col>Special Akttack</Col>
-                                <Col>{memberObject.nurmon.special_attack}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256} 
-                                        value={memberSpecialAttackEV}
-                                        onChange={(e) => setMemberSpecialAttackEV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31}
-                                        value={memberSpecialAttackIV}
-                                        onChange={(e) => setMemberSpecialAttackIV(parseInt(e.target.value))} />
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalSpecialAttack()} max={200} />
-                                </Col>
-                                <Col>{calculateTotalSpecialAttack()}</Col>
-                            </Row>
-                            <Row>
-                                <Col>Special Defense</Col>
-                                <Col>{memberObject.nurmon.special_def}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256}
-                                        value={memberSpecialDefenseEV}
-                                        onChange={(e) => setMemberSpecialDefenseEV(parseInt(e.target.value))} />
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31}
-                                        value={memberSpecialDefenseIV}
-                                        onChange={(e) => setMemberSpecialDefenseIV(parseInt(e.target.value))} />
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalSpecialDefense()} max={200} />
-                                </Col>
-                                <Col>{calculateTotalSpecialDefense()}</Col>
-                            </Row>
-                            <Row>
-                                <Col>Speed</Col>
-                                <Col>{memberObject.nurmon.speed}</Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={256}
-                                        value={memberSpeedEV} 
-                                        onChange={(e) => setMemberSpeedEV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col>
-                                    <input type="number" className="form-control" placeholder="0"
-                                        max={31} 
-                                        value={memberSpeedIV}
-                                        onChange={(e) => setMemberSpeedIV(parseInt(e.target.value))}/>
-                                </Col>
-                                <Col md={4}>
-                                    <ProgressBar now={calculateTotalSpeed()} max={200} />
-                                </Col>
-                                <Col>{calculateTotalSpeed()}</Col>
-                            </Row>
-                        </div>
-                    )}
 
-                    <div>
-                        <h3>Nature:</h3>
-                        <ExtendedCustomComboBox<NatureDataDTO>
-                            dataSource={natures}
-                            textSelector={(nature) => {
-                                return `${nature.name} (${nature.buff_stat ? nature.buff_stat + "+" : "" } / ${nature.nerf_stat ? nature.nerf_stat + "-" : "" })`
-                            }}
-                            valueSelector={(item) => item.id}
-                            selectedValue={selectedNatureId}
-                            onChange={(selectedNatureId) => {
-                                setSelectedNatureId(parseInt(selectedNatureId as string));
-                            }}
-                        />
-                    </div>
+        <div className="card mb-4 shadow-sm">
+            <div className="card-body">
+                <h4 className="mb-4">Stats</h4>
+                {memberObject && (
+                    <Table striped hover responsive className="align-middle text-center">
+                        <thead className="table-light">
+                            <tr>
+                                <th>Stat</th>
+                                <th>Base</th>
+                                <th>EVs</th>
+                                <th>IVs</th>
+                                <th style={{ minWidth: "120px" }}>Bar</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {[
+                                { label: "HP", base: memberObject.nurmon.hp, EV: memberHpEV, setEV: setMemberHpEV, IV: memberHpIV, setIV: setMemberHpIV, calc: calculateTotalHP },
+                                { label: "Attack", base: memberObject.nurmon.attack, EV: memberAttackEV, setEV: setMemberAttackEV, IV: memberAttackIV, setIV: setMemberAttackIV, calc: calculateTotalAttack },
+                                { label: "Defense", base: memberObject.nurmon.def, EV: memberDefenseEV, setEV: setMemberDefenseEV, IV: memberDefenseIV, setIV: setMemberDefenseIV, calc: calculateTotalDefense },
+                                { label: "Sp. Atk", base: memberObject.nurmon.special_attack, EV: memberSpecialAttackEV, setEV: setMemberSpecialAttackEV, IV: memberSpecialAttackIV, setIV: setMemberSpecialAttackIV, calc: calculateTotalSpecialAttack },
+                                { label: "Sp. Def", base: memberObject.nurmon.special_def, EV: memberSpecialDefenseEV, setEV: setMemberSpecialDefenseEV, IV: memberSpecialDefenseIV, setIV: setMemberSpecialDefenseIV, calc: calculateTotalSpecialDefense },
+                                { label: "Speed", base: memberObject.nurmon.speed, EV: memberSpeedEV, setEV: setMemberSpeedEV, IV: memberSpeedIV, setIV: setMemberSpeedIV, calc: calculateTotalSpeed },
+                            ].map((stat, i) => (
+                                <tr key={i}>
+                                    <td className="text-capitalize">{stat.label}</td>
+                                    <td>{stat.base}</td>
+                                    <td>
+                                        <Form.Control
+                                            type="number"
+                                            min={0}
+                                            max={256}
+                                            value={stat.EV}
+                                            size="sm"
+                                            onChange={(e) => stat.setEV(parseInt(e.target.value) || 0)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <Form.Control
+                                            type="number"
+                                            min={0}
+                                            max={31}
+                                            value={stat.IV}
+                                            size="sm"
+                                            onChange={(e) => stat.setIV(parseInt(e.target.value) || 0)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <ProgressBar now={stat.calc()} max={global_vars.MAX_STANDARD} />
+                                    </td>
+                                    <td><strong>{stat.calc()}</strong></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                )}
 
-                    <div className="text-center mt-3">
-                        <button className="btn btn-outline-success"
-                           type="button" onClick={handleUpdateMemberStats}>Save Stats changes</button>
-                    </div>
+                <hr />
+
+                <div className="mb-3">
+                    <h5>Nature</h5>
+                    <ExtendedCustomComboBox<NatureDataDTO>
+                        dataSource={natures}
+                        textSelector={(nature) =>
+                            `${nature.name} (${nature.buff_stat ? nature.buff_stat + "+" : ""} / ${nature.nerf_stat ? nature.nerf_stat + "-" : ""})`
+                        }
+                        valueSelector={(item) => item.id}
+                        selectedValue={selectedNatureId}
+                        onChange={(id) => setSelectedNatureId(parseInt(id as string))}
+                    />
+                </div>
+
+                <div className="text-center">
+                    <button className="btn btn-outline-success" onClick={handleUpdateMemberStats}>
+                        Save Stats Changes
+                    </button>
                 </div>
             </div>
         </div>
+
+
     )
 }
 
