@@ -25,6 +25,10 @@ SELECT id, "name", image_path, hp, def, attack, special_attack,
 	second_ability_id, third_ability_id, "createdAt", "updatedAt"
 FROM "Nurmons";
 
+UPDATE "Nurmons" SET
+hp = hp+1*10, def = def+1*10, attack = attack+1*10, special_attack = special_attack+1*10,
+special_def = special_def+1*10, speed  = speed+1*10
+
 SELECT id, nickname, nurmon_id, team_id, nature_id, 
 	selected_ability_id, item_id, hp_ev, attack_ev, 
 	def_ev, special_attack_ev, special_def_ev, speed_ev, 

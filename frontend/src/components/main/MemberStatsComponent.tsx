@@ -67,6 +67,7 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
     }
 
     const calculateTotalHP = () => {
+        console.log(getSelectedNature())
         return calculateStatsFormularForHp(memberObject.nurmon.hp, 100, memberHpEV, memberHpIV);
     }
 

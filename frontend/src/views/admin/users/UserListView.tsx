@@ -47,7 +47,7 @@ const UsersListView = () => {
                 <h1>Users List</h1>
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
                 <div>
-                    <table className="table table-striped">
+                    <table className="table table-striped table-responsive" >
                         <thead>
                             <tr>
                                 <th className="text-center">Username</th>
