@@ -161,7 +161,8 @@ const NurmonFormView = () => {
             const response = await fetch(`${global_vars.API_URL}/nurmons/${params.id}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
                 }
             })
 
@@ -196,7 +197,8 @@ const NurmonFormView = () => {
             const response = await fetch(`${global_vars.API_URL}/types`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
                 }
             });
 
@@ -218,7 +220,8 @@ const NurmonFormView = () => {
             const response = await fetch(`${global_vars.API_URL}/abilities`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
                 }
             });
 

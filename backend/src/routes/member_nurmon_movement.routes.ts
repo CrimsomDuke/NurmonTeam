@@ -7,11 +7,11 @@ import MemberNurmonMovementController from "../controllers/member_nurmon_movemen
 module.exports = (app : Application, container : Container, middlewareProvider : MiddlewareProvider) => {
     const controller = new MemberNurmonMovementController(container.MemberNurmonMovementService);
 
-    app.get('/api/member_nurmon_movements', controller.getAllMemberNurmonMovements)
+    app.get('/api/member_nurmon_movements', middlewareProvider.authMiddleware, controller.getAllMemberNurmonMovements)
     app.post('/api/member_nurmon_movements/create', middlewareProvider.authMiddleware, controller.createMemberNurmonMovement);
 
-    app.get('/api/member_nurmon_movements/:id', controller.getMemberNurmonMovementById);
-    app.get('/api/member_nurmon_movements/team_member/:teamMemberId', controller.getAllMemberNurmonMovementsByTeamMemberId);
+    app.get('/api/member_nurmon_movements/:id', middlewareProvider.authMiddleware, controller.getMemberNurmonMovementById);
+    app.get('/api/member_nurmon_movements/team_member/:teamMemberId', middlewareProvider.authMiddleware, controller.getAllMemberNurmonMovementsByTeamMemberId);
     app.put('/api/member_nurmon_movements/update/:id', middlewareProvider.authMiddleware, controller.updateMemberNurmonMovement);
     app.delete('/api/member_nurmon_movements/delete/:id', middlewareProvider.authMiddleware, controller.deleteMemberNurmonMovement);
 }

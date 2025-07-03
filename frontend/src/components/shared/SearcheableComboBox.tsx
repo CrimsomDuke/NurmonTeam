@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import global_vars from "../../../global/global_vars";
+import { useAuth } from "../../hooks/useAuth";
 
 interface SearchableComboBoxProps<T> {
   endpoint: string;
@@ -14,6 +15,8 @@ interface SearchableComboBoxProps<T> {
 const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
   placeholder = "Search...", image_field = 'image_path' as keyof T, folder_name = '',
   onSelect }: SearchableComboBoxProps<T>) => {
+
+  const { getToken } = useAuth();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<T[]>([]);
@@ -40,7 +43,13 @@ const SearchableComboBox = <T extends object>({endpoint, textField, valueField,
   const searchQuery = async (term: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${endpoint}?term=${(term)}`);
+      const res = await fetch(`${endpoint}?term=${(term)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getToken()}` 
+        }
+      });
       const data = await res.json();
       setResults(data || []);
     } catch (err) {

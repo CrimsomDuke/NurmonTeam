@@ -181,6 +181,7 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
             }
         });
 
@@ -195,7 +196,13 @@ const MemberItemAbilityComponent = (props: MemberItemAbilityComponentProps) => {
     }
 
     const fetchItemData = async (itemId: number) => {
-        const response = await fetch(`${global_vars.API_URL}/items/${itemId}`);
+        const response = await fetch(`${global_vars.API_URL}/items/${itemId}`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getToken()}`
+            }
+        });
         const data = await response.json();
         if (response.ok) {
             setSelectedItemData(data);

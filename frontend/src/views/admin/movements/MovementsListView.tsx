@@ -3,12 +3,15 @@ import AdminNavbar from "../../../components/admin/AdminNavbar";
 import global_vars from "../../../../global/global_vars";
 import type { MovementDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 
 const MovementsListView = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [movements, setMovements] = useState([]);
+
+    const { getToken } = useAuth();
 
     
     useEffect(() => {
@@ -20,7 +23,8 @@ const MovementsListView = () => {
             const response = await fetch(`${global_vars.API_URL}/movements`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
                 }
             })
 

@@ -7,6 +7,6 @@ import TypeController from "../controllers/type.controller";
 module.exports = (app: Application, container : Container, middlewareProvider : MiddlewareProvider) => {
     const controller = new TypeController(container.TypeService);
 
-    app.get("/api/types", controller.getAllTypes);
-    app.get("/api/types/:id", controller.getTypeById);
+    app.get("/api/types", middlewareProvider.authMiddleware, controller.getAllTypes);
+    app.get("/api/types/:id", middlewareProvider.authMiddleware, controller.getTypeById);
 }

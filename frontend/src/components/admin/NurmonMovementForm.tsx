@@ -25,7 +25,12 @@ const NurmonMovementsFormView = (props : NurmonMovementsProps) => {
     }, [props.nurmonId]);
 
     const fetchAllMovements = async () => {
-        const res = await fetch(`${global_vars.API_URL}/movements`);
+        const res = await fetch(`${global_vars.API_URL}/movements`, {
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         const data = await res.json();
         if (res.ok) {
             setAllMovements(data);
@@ -33,7 +38,12 @@ const NurmonMovementsFormView = (props : NurmonMovementsProps) => {
     };
 
     const fetchAssignedMovements = async () => {
-        const res = await fetch(`${global_vars.API_URL}/nurmon_movements/nurmon/${props.nurmonId}`);
+        const res = await fetch(`${global_vars.API_URL}/nurmon_movements/nurmon/${props.nurmonId}`, {
+            headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
         const data = await res.json();
         if (res.ok) {
             setAssignedMovements(data);

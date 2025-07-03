@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import global_vars from "../../../global/global_vars";
+import { useAuth } from "../../hooks/useAuth";
 
 interface ExtendedSearchableComboBoxProps<T> {
   endpoint: string;
@@ -23,6 +24,8 @@ const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, v
   const [isLoading, setIsLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const { getToken } = useAuth();
+
   useEffect(() => {
     if (query.trim().length === 0 && !searchOnEmptyQuery) {
       setResults([]);
@@ -43,7 +46,13 @@ const ExtendedSearchableComboBox = <T extends object>({endpoint, textSelector, v
   const searchQuery = async (term: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${endpoint}?term=${(term)}`);
+      const res = await fetch(`${endpoint}?term=${(term)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getToken()}`
+        }
+      });
       const data = await res.json();
       setResults(data || []);
     } catch (err) {

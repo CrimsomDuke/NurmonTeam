@@ -3,12 +3,15 @@ import AdminNavbar from "../../../components/admin/AdminNavbar";
 import global_vars from "../../../../global/global_vars";
 import type { NurmonDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 
 const NurmonsListView = () => {
     
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [nurmons, setNurmons] = useState<NurmonDataDTO[]>([])
+
+    const { getToken } = useAuth();
 
     useEffect(() => {
         fetchNurmons();
@@ -19,7 +22,8 @@ const NurmonsListView = () => {
             const response = await fetch(`${global_vars.API_URL}/nurmons`, {
                 method : 'GET',
                 headers : {
-                    'Content-Type' : 'application/json'
+                    'Content-Type' : 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
                 }
             });
 

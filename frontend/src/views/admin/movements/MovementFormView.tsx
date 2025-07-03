@@ -44,7 +44,12 @@ const MovementFormView = () => {
 
     const fetchMovementData = async () => {
         try {
-            const res = await fetch(`${global_vars.API_URL}/movements/${params.id}`);
+            const res = await fetch(`${global_vars.API_URL}/movements/${params.id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            });
             const data = await res.json();
             if (res.ok) {
                 setName(data.name);
