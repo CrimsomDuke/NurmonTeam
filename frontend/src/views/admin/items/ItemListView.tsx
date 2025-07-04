@@ -3,12 +3,14 @@ import AdminNavbar from "../../../components/admin/AdminNavbar";
 import global_vars from "../../../../global/global_vars";
 import type { ItemDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 
 const ItemsListView = () => {
     
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [items, setItems] = useState<ItemDataDTO[]>([])
+    const { getToken } = useAuth();
 
     useEffect(() => {
         fetchItems();
@@ -19,7 +21,8 @@ const ItemsListView = () => {
             const response = await fetch(`${global_vars.API_URL}/items`, {
                 method : 'GET',
                 headers : {
-                    'Content-Type' : 'application/json'
+                    'Content-Type' : 'application/json',
+                    'Authorization' : `Bearer ${getToken()}`
                 }
             });
 

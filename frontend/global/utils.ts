@@ -1,7 +1,7 @@
 
 
 const calculateStatsFormularForHp = (baseHp : number, level : number, hpIV : number, hpEV : number) : number => {
-    const val = ((((2 * baseHp) + hpIV + (hpEV / 4))* level)/level) + level + 10;
+    const val = ((((2 * baseHp) + hpIV + (hpEV / 4))* level)/100) + level + 10;
     return Math.floor(val);
 }
 

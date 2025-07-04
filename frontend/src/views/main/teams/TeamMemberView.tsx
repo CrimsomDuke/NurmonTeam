@@ -136,15 +136,15 @@ const TeamMemberView = () => {
                 <div className="card mt-3">
                     <div className="card-body">
                         <Row>
-                            <Col md={5}>
+                            <Col md={5} className="d-flex flex-column justify-content-center align-content-center">
                                 <EditText value={teamMemberName} className="card mb-3"
                                     onChange={(e) => {setTeamMemberName(e.target.value);}}
                                     onSave={updateTeamMemberName}
                                     showEditButton/>
                                 {teamMemberData?.nurmon.image_path && (
-                                    <div className="d-flex justify-content-center mb-3">
+                                    <div className="d-flex justify-content-center mb-3 card align-content-center w-100">
                                         <img src={`${global_vars.UPLOADS_URL}/nurmon/${teamMemberData.nurmon.image_path}?t=${new Date().getTime()}`} 
-                                        alt={teamMemberName} className="img-fluid" style={{ maxWidth: "300px"  }} />
+                                        alt={teamMemberName} className="img-fluid w-100" style={{ width: "250px"  }} />
                                     </div>
                                 )}
                                 <div className="text-center">

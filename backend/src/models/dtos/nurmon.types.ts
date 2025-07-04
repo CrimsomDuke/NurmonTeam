@@ -43,7 +43,7 @@ export interface NurmonUpdateDTO {
     def? : number;
     attack? : number;
     special_attack? : number;
-    special_defense? : number;
+    special_def? : number;
     speed? : number;
     type_id? : number;
     first_ability_id? : number | null;

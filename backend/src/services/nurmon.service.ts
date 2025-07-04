@@ -148,7 +148,7 @@ class NurmonService {
             nurmon.def = nurmonData.def || nurmon.def;
             nurmon.attack = nurmonData.attack || nurmon.attack;
             nurmon.special_attack = nurmonData.special_attack || nurmon.special_attack;
-            nurmon.special_def = nurmonData.special_defense || nurmon.special_def;
+            nurmon.special_def = nurmonData.special_def || nurmon.special_def;
             nurmon.speed = nurmonData.speed || nurmon.speed;
             nurmon.first_ability_id = nurmonData.first_ability_id || nurmon.first_ability_id;
             nurmon.second_ability_id = nurmonData.second_ability_id || nurmon.second_ability_id;
