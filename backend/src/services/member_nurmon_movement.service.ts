@@ -124,7 +124,7 @@ class MemberNurmonMovementService {
             if (!nurmonMovement) {
                 throw new Error("Nurmon movement not found");
             }
-
+                                                  
             const teamMember = await this.db.TeamMember.findByPk(memberNurmonMovementData.team_member_id);
             if (!teamMember) {
                 throw new Error("Team member not found");

@@ -18,6 +18,8 @@ import MovementsListView from './views/admin/movements/MovementsListView.tsx';
 import MovementFormView from './views/admin/movements/MovementFormView.tsx';
 import TeamDetailsView from './views/main/teams/TeamDetailsView.tsx';
 import TeamMemberView from './views/main/teams/TeamMemberView.tsx';
+import AbilitiesListView from './views/admin/abilities/AbilitiesListView.tsx';
+import AbilityFormView from './views/admin/abilities/AbilityFormView.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -39,8 +41,10 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/admin/movements/' element={<MovementsListView />} />
           <Route path='/admin/movements/form/' element={<MovementFormView />} />
           <Route path='/admin/movements/form/:id' element={<MovementFormView />} />
+          <Route path='/admin/abilities/' element={<AbilitiesListView /> } />
+          <Route path='/admin/abilities/form/' element={<AbilityFormView />} />
+          <Route path='/admin/abilities/form/:id' element={<AbilityFormView />} />
 
- 
           {/* Main application route */}
           <Route path="/" element={<MainView />} />
           <Route path="/teams/:id" element={<TeamDetailsView />} />

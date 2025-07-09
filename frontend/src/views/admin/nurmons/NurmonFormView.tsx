@@ -1,13 +1,15 @@
-import { Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import AdminNavbar from "../../../components/admin/AdminNavbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import global_vars from "../../../../global/global_vars";
 import CustomComboBox from "../../../components/shared/CustomComboBox";
-import type { AbilityDataDTO, TypeDataDTO } from "../../../types/types";
+import type { AbilityDataDTO, ItemDataDTO, TypeDataDTO } from "../../../types/types";
 import { Link } from "react-router-dom";
 import NurmonMovementsFormView from "../../../components/admin/NurmonMovementForm";
+import ExtendedSearchableComboBox from "../../../components/shared/ExtendedSearcheableComboBox";
+import { PencilFill } from "react-bootstrap-icons";
 
 
 const NurmonFormView = () => {
@@ -33,6 +35,16 @@ const NurmonFormView = () => {
     const [abilities, setAbilities] = useState<AbilityDataDTO[]>([]); // Assuming abilities are of TypeDataDTO type
 
     const [errorMessage, setErrorMessage] = useState<string>('');
+
+    const [showAbilityModal, setShowAbilityModal] = useState<boolean>(false);
+
+    const [selectedAbilityPos, setSelectedAbilityPos] = useState<number | null>(null);
+
+    const handleCloseAbilityModal = () => {
+        setShowAbilityModal(false);
+        setSelectedAbilityPos(null);
+    }
+    const handleShowAbilityModal = () => setShowAbilityModal(true);
 
     useEffect(() => {
         fetchTypes();
@@ -330,20 +342,38 @@ const NurmonFormView = () => {
 
                             <Form.Group>
                                 <Form.Label>First Ability</Form.Label>
-                                <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
-                                    selectedValue={firstAbilityId ?? ''} onChange={(val) => setFirstAbilityId(val ? parseInt(val as string) : null)} />
+                                <div className="d-flex">
+                                    <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
+                                        selectedValue={firstAbilityId ?? ''} onChange={(val) => setThirdAbilityId(val ? parseInt(val as string) : null)}  disabled/>
+                                        <Button className="btn btn-primary" onClick={() => {
+                                            setSelectedAbilityPos(1)
+                                            handleShowAbilityModal();
+                                        }}><PencilFill/></Button>
+                                </div>
                             </Form.Group>
 
                             <Form.Group>
                                 <Form.Label>Second Ability</Form.Label>
-                                <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
-                                    selectedValue={secondAbilityId ?? ''} onChange={(val) => setSecondAbilityId(val ? parseInt(val as string) : null)} />
+                                <div className="d-flex">
+                                    <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
+                                        selectedValue={secondAbilityId ?? ''} onChange={(val) => setThirdAbilityId(val ? parseInt(val as string) : null)}  disabled/>
+                                        <Button className="btn btn-primary" onClick={() => {
+                                            setSelectedAbilityPos(2)
+                                            handleShowAbilityModal();
+                                        }}><PencilFill/></Button>
+                                </div>
                             </Form.Group>
 
                             <Form.Group>
                                 <Form.Label>Third Ability</Form.Label>
-                                <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
-                                    selectedValue={thirdAbilityId ?? ''} onChange={(val) => setThirdAbilityId(val ? parseInt(val as string) : null)} />
+                                <div className="d-flex">
+                                    <CustomComboBox<AbilityDataDTO> dataSource={abilities} textField="name" valueField="id" 
+                                        selectedValue={thirdAbilityId ?? ''} onChange={(val) => setThirdAbilityId(val ? parseInt(val as string) : null)}  disabled/>
+                                        <Button className="btn btn-primary" onClick={() => {
+                                            setSelectedAbilityPos(3)
+                                            handleShowAbilityModal();
+                                        }}><PencilFill/></Button>
+                                </div>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -364,6 +394,33 @@ const NurmonFormView = () => {
                     )}
                 </Row>
             </main>
+
+            <Modal show={showAbilityModal} onHide={handleCloseAbilityModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nurmon Abilities</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ExtendedSearchableComboBox 
+                        endpoint={`${global_vars.API_URL}/abilities/search`}
+                        textSelector={(item: ItemDataDTO) => item.name}
+                        valueSelector={(item: ItemDataDTO) => item.id}
+                        onSelect={(item: ItemDataDTO) => {
+                            if (selectedAbilityPos === 1) {
+                                setFirstAbilityId(item.id);
+                            } else if (selectedAbilityPos === 2) {
+                                setSecondAbilityId(item.id);
+                            } else if (selectedAbilityPos === 3) {
+                                setThirdAbilityId(item.id);
+                            }
+                        }}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseAbilityModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }

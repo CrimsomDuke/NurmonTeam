@@ -1,6 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { TokenService } from "../services/token.service";
 import { UserService } from "../services/user.service";
+import { UserPayload } from "../models/dtos/user.types";
 
 
 export class MiddlewareProvider {
@@ -50,8 +51,8 @@ export class MiddlewareProvider {
         }
 
         try {
-            const user = await this.tokenService.verifyToken(token);
-            if (!user || user.isAdmin === false) {
+            const user : UserPayload = await this.tokenService.verifyToken(token);
+            if (!user || user.is_admin === false) {
                 res.status(403).json({ error: "Forbidden: Admin access required" });
                 return;
             }

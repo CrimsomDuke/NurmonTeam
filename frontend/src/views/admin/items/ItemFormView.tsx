@@ -151,7 +151,8 @@ const ItemFormView = () => {
             const response = await fetch(`${global_vars.API_URL}/items/${params.id}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${getToken()}`
                 }
             });
 
