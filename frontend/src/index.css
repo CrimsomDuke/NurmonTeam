@@ -1,46 +1,198 @@
-
-body{
-    background-color: #cecdcd;
-    color: #000000;
+body {
+    background-color: #f8f9fa;
+    color: #212529;
     font-family: 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
-.form-container {
-    max-width: 400px;
+main.container {
+    max-width: 1200px;
 }
 
-.form-container {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+/* Header section */
+.text-center.mb-4 {
+    margin-bottom: 2.5rem !important;
 }
 
-.team-container{
-    transition: all 0.5s ease-in-out;
+.text-center.mb-4 h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
 }
 
-.team-container::after, .team-container::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, #ff0000, #00ffff);
-  bottom: -5px;
-  left: 0;
-  transform: scaleX(0.7);
-  transform-origin: right;
-  transition: 0.4s ease-out;
+.text-center.mb-4 .btn {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    border-width: 2px;
 }
 
-.team-container::before {
-  top: -5px;
-  transform-origin: left;
+/* Main content area */
+.bg-light {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 2rem !important;
+}
+
+/* Team header section */
+.d-flex.justify-content-between.align-items-center.mb-4 {
+    margin-bottom: 2rem !important;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.d-flex.justify-content-between.align-items-center.mb-4 h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+}
+
+/* Team member cards */
+.row-cols-md-3 {
+    gap: 1.5rem;
+}
+
+.team-container {
+    transition: all 0.3s ease;
+    position: relative;
+    margin-bottom: 1rem;
 }
 
 .team-container:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+}
 
+.team-container .card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.team-container:hover .card {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.team-container .card-body {
+    padding: 1rem;
+}
+
+.team-container .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.team-container .text-muted {
+    color: #6c757d !important;
+    font-size: 0.9rem;
+}
+
+.team-container img {
+    transition: transform 0.3s ease;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-container:hover img {
+    transform: scale(1.05);
+}
+
+/* Empty state */
+.text-center.text-muted.mt-4 {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-outline-danger {
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-outline-danger:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-sm {
+    padding: 0.35rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Modal styles */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    border-color: #2ecc71;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .row-cols-md-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .d-flex.justify-content-between.align-items-center.mb-4 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .row-cols-md-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .text-center.mb-4 h1 {
+        font-size: 2rem;
+    }
+    
+    .bg-light {
+        padding: 1.5rem !important;
+    }
 }

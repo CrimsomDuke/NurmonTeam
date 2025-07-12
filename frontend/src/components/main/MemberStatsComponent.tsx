@@ -62,6 +62,9 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
         }
     }, [props.memberObject])
 
+    const totalEVs = memberHpEV + memberAttackEV + memberDefenseEV +
+        memberSpecialAttackEV + memberSpecialDefenseEV + memberSpeedEV;
+
     const getSelectedNature = () => {
         return natures.find(nature => nature.id === selectedNatureId) || null;
     }
@@ -125,6 +128,14 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
     }, [memberAttackEV, memberAttackIV, memberDefenseEV, memberDefenseIV, memberHpEV, memberHpIV,
         memberSpecialAttackEV, memberSpecialAttackIV, memberSpecialDefenseEV, memberSpecialDefenseIV,
         memberSpeedEV, memberSpeedIV, selectedNatureId]);
+
+    const getProgressColor = (value: number, max: number) => {
+        const percentage = (value / max) * 100;
+        if (percentage < 30) return 'danger';
+        if (percentage < 60) return 'warning';
+        if (percentage < 80) return 'info';
+        return 'success';
+    };
 
     const fetchNatures = async () => {
         try {
@@ -203,86 +214,335 @@ const MemberStatsComponent = (props: MemberStatsComponentProps) => {
 
     return (
 
-        <div className="card mb-4 shadow-sm">
-            <div className="card-body">
-                <h4 className="mb-4">Stats</h4>
-                {memberObject && (
-                    <Table striped hover responsive className="align-middle text-center">
-                        <thead className="table-light">
-                            <tr>
-                                <th>Stat</th>
-                                <th>Base</th>
-                                <th>EVs</th>
-                                <th>IVs</th>
-                                <th style={{ minWidth: "120px" }}>Bar</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {[
-                                { label: "HP", base: memberObject.nurmon.hp, EV: memberHpEV, setEV: setMemberHpEV, IV: memberHpIV, setIV: setMemberHpIV, calc: calculateTotalHP },
-                                { label: "Attack", base: memberObject.nurmon.attack, EV: memberAttackEV, setEV: setMemberAttackEV, IV: memberAttackIV, setIV: setMemberAttackIV, calc: calculateTotalAttack },
-                                { label: "Defense", base: memberObject.nurmon.def, EV: memberDefenseEV, setEV: setMemberDefenseEV, IV: memberDefenseIV, setIV: setMemberDefenseIV, calc: calculateTotalDefense },
-                                { label: "Sp. Atk", base: memberObject.nurmon.special_attack, EV: memberSpecialAttackEV, setEV: setMemberSpecialAttackEV, IV: memberSpecialAttackIV, setIV: setMemberSpecialAttackIV, calc: calculateTotalSpecialAttack },
-                                { label: "Sp. Def", base: memberObject.nurmon.special_def, EV: memberSpecialDefenseEV, setEV: setMemberSpecialDefenseEV, IV: memberSpecialDefenseIV, setIV: setMemberSpecialDefenseIV, calc: calculateTotalSpecialDefense },
-                                { label: "Speed", base: memberObject.nurmon.speed, EV: memberSpeedEV, setEV: setMemberSpeedEV, IV: memberSpeedIV, setIV: setMemberSpeedIV, calc: calculateTotalSpeed },
-                            ].map((stat, i) => (
-                                <tr key={i}>
-                                    <td className="text-capitalize">{stat.label}</td>
-                                    <td>{stat.base}</td>
-                                    <td>
-                                        <Form.Control
-                                            type="number"
-                                            min={0}
-                                            max={256}
-                                            value={stat.EV}
-                                            size="sm"
-                                            onChange={(e) => stat.setEV(parseInt(e.target.value) || 0)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Form.Control
-                                            type="number"
-                                            min={0}
-                                            max={31}
-                                            value={stat.IV}
-                                            size="sm"
-                                            onChange={(e) => stat.setIV(parseInt(e.target.value) || 0)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <ProgressBar now={stat.calc()} max={global_vars.MAX_STANDARD} />
-                                    </td>
-                                    <td><strong>{stat.calc()}</strong></td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                )}
 
-                <hr />
+        <>
+            <div className="stats-container">
+                <div className="card border-0 shadow-lg">
+                    <div className="card-header bg-primary text-white">
+                        <h4 className="mb-0">Stats Configuration</h4>
+                    </div>
 
-                <div className="mb-3">
-                    <h5>Nature</h5>
-                    <ExtendedCustomComboBox<NatureDataDTO>
-                        dataSource={natures}
-                        textSelector={(nature) =>
-                            `${nature.name} (${nature.buff_stat ? nature.buff_stat + "+" : ""} / ${nature.nerf_stat ? nature.nerf_stat + "-" : ""})`
-                        }
-                        valueSelector={(item) => item.id}
-                        selectedValue={selectedNatureId}
-                        onChange={(id) => setSelectedNatureId(parseInt(id as string))}
-                    />
-                </div>
+                    <div className="card-body">
+                        {memberObject && (
+                            <div className="table-responsive">
+                                <Table bordered hover className="mb-4">
+                                    <thead className="thead-dark">
+                                        <tr>
+                                            <th className="text-center">Stat</th>
+                                            <th className="text-center">Base</th>
+                                            <th className="text-center">EVs</th>
+                                            <th className="text-center">IVs</th>
+                                            <th className="text-center" style={{ minWidth: "150px" }}>Progress</th>
+                                            <th className="text-center">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="text-center fw-bold">HP</td>
+                                            <td className="text-center">{memberObject.nurmon.hp}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberHpEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberHpEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberHpIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberHpIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalHP()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalHP(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalHP()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalHP()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center fw-bold">Attack</td>
+                                            <td className="text-center">{memberObject.nurmon.attack}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberAttackEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberAttackEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberAttackIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberAttackIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalAttack()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalAttack(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalAttack()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalAttack()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center fw-bold">Defense</td>
+                                            <td className="text-center">{memberObject.nurmon.def}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberDefenseEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberDefenseEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberDefenseIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberDefenseIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalDefense()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalDefense(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalDefense()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalDefense()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center fw-bold">Sp. Atk</td>
+                                            <td className="text-center">{memberObject.nurmon.special_attack}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberSpecialAttackEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberSpecialAttackEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberSpecialAttackIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberSpecialAttackIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalSpecialAttack()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalSpecialAttack(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalSpecialAttack()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalSpecialAttack()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center fw-bold">Sp. Def</td>
+                                            <td className="text-center">{memberObject.nurmon.special_def}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberSpecialDefenseEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberSpecialDefenseEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberSpecialDefenseIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberSpecialDefenseIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalSpecialDefense()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalSpecialDefense(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalSpecialDefense()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalSpecialDefense()}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="text-center fw-bold">Speed</td>
+                                            <td className="text-center">{memberObject.nurmon.speed}</td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={256}
+                                                    value={memberSpeedEV}
+                                                    size="sm"
+                                                    className="text-center ev-input"
+                                                    onChange={(e) => setMemberSpeedEV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td className="text-center">
+                                                <Form.Control
+                                                    type="number"
+                                                    min={0}
+                                                    max={31}
+                                                    value={memberSpeedIV}
+                                                    size="sm"
+                                                    className="text-center iv-input"
+                                                    onChange={(e) => setMemberSpeedIV(parseInt(e.target.value) || 0)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <ProgressBar
+                                                    now={calculateTotalSpeed()}
+                                                    max={global_vars.MAX_STANDARD}
+                                                    variant={getProgressColor(calculateTotalSpeed(), global_vars.MAX_STANDARD)}
+                                                    className="stat-progress"
+                                                    label={`${calculateTotalSpeed()}`}
+                                                />
+                                            </td>
+                                            <td className="text-center fw-bold">{calculateTotalSpeed()}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </div>
+                        )}
 
-                <div className="text-center">
-                    <button className="btn btn-outline-success" onClick={handleUpdateMemberStats}>
-                        Save Stats Changes
-                    </button>
+                        <div className="nature-selection mb-4">
+                            <h5 className="mb-3">Nature</h5>
+                            <ExtendedCustomComboBox<NatureDataDTO>
+                                dataSource={natures}
+                                textSelector={(nature) =>
+                                    `${nature.name} (${nature.buff_stat ? nature.buff_stat + "+" : ""} / ${nature.nerf_stat ? nature.nerf_stat + "-" : ""})`
+                                }
+                                valueSelector={(item) => item.id}
+                                selectedValue={selectedNatureId}
+                                onChange={(id) => setSelectedNatureId(parseInt(id as string))}
+                            />
+                        </div>
+
+                        <div className="text-center">
+                            <button
+                                className="btn btn-primary btn-lg px-4"
+                                onClick={handleUpdateMemberStats}
+                                disabled={totalEVs > 508}
+                            >
+                                <i className="bi bi-save me-2"></i>
+                                Save Changes
+                            </button>
+                            {totalEVs > 508 && (
+                                <div className="text-danger mt-2">
+                                    Total EVs cannot exceed 508
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <style>{`
+                .stats-container {
+                    max-width: 1000px;
+                    margin: 0 auto;
+                }
+                
+                .card {
+                    border-radius: 12px;
+                    overflow: hidden;
+                }
+                
+                .card-header {
+                    padding: 1.25rem 1.5rem;
+                }
+                
+                .ev-input, .iv-input {
+                    max-width: 80px;
+                    margin: 0 auto;
+                }
+                
+                .stat-progress {
+                    height: 24px;
+                    border-radius: 12px;
+                    font-size: 0.8rem;
+                    font-weight: bold;
+                }
+                
+                .total-ev-progress {
+                    height: 10px;
+                    border-radius: 5px;
+                }
+                
+                .nature-combobox {
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+                
+                .table th {
+                    background-color: #f8f9fa;
+                    vertical-align: middle;
+                }
+                
+                @media (max-width: 768px) {
+                    .table-responsive {
+                        overflow-x: auto;
+                    }
+                    
+                    .ev-input, .iv-input {
+                        max-width: 60px;
+                    }
+                }
+            `}</style>
+        </>
 
     )
 }

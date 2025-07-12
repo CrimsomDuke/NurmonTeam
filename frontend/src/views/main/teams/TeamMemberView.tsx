@@ -32,7 +32,7 @@ const TeamMemberView = () => {
     }, [params.id]);
 
     const fetchTeamMemberData = async () => {
-        try{
+        try {
             const response = await fetch(`${global_vars.API_URL}/team_members/${params.id}`, {
                 method: 'GET',
                 headers: {
@@ -40,7 +40,7 @@ const TeamMemberView = () => {
                     "Authorization": `Bearer ${getToken()}`
                 }
             });
-        
+
             const data = await response.json();
             if (response.ok) {
                 setTeamMemberData(data);
@@ -50,7 +50,7 @@ const TeamMemberView = () => {
                 setErrorMessage("Failed to fetch team member data. Please try again later.");
             }
 
-        }catch(err){
+        } catch (err) {
             console.error("Error fetching team member data:", err);
             setErrorMessage("Failed to fetch team member data. Please try again later.");
         }
@@ -66,9 +66,9 @@ const TeamMemberView = () => {
         try {
 
             const body = {
-                nickname : teamMemberName,
-                team_id : teamMemberData.team_id,
-                nurmon_id : teamMemberData.nurmon_id
+                nickname: teamMemberName,
+                team_id: teamMemberData.team_id,
+                nurmon_id: teamMemberData.nurmon_id
             }
 
             const response = await fetch(`${global_vars.API_URL}/team_members/update/${teamMemberData.id}`, {
@@ -96,31 +96,31 @@ const TeamMemberView = () => {
     }
 
     const handleDeleteTeamMember = async () => {
-        if(!teamMemberData) return;
+        if (!teamMemberData) return;
 
         const team_id = teamMemberData.team_id;
         const response = await fetch(`${global_vars.API_URL}/team_members/delete/${teamMemberData.id}`, {
             method: 'DELETE',
-            headers : {
-                'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${getToken()}`
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             }
         });
 
         const data = await response.json();
-        if (response.ok){
+        if (response.ok) {
             alert('Team member deleted');
             navigate(`/teams/${team_id}`)
-        }else{
+        } else {
             setErrorMessage(data.data || data.error || 'Error while deleting Team Mmeber')
             return;
         }
     }
-    
+
     return (
         <>
             <CustomNavBar />
-            <main className="container"> 
+            <main className="container">
                 <h1>Team Member Details</h1>
                 <div className="d-flex justify-content-between">
                     {teamMemberData ? (
@@ -133,32 +133,65 @@ const TeamMemberView = () => {
                 </div>
                 {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
-                <div className="card mt-3">
+                <div className="card mt-2">
                     <div className="card-body">
-                        <Row>
-                            <Col md={5} className="d-flex flex-column justify-content-center align-content-center">
-                                <EditText value={teamMemberName} className="card mb-3"
-                                    onChange={(e) => {setTeamMemberName(e.target.value);}}
-                                    onSave={updateTeamMemberName}
-                                    showEditButton/>
+                        <Row className="g-4">
+                            <Col md={5} className="d-flex flex-column">
+                                {/* Team Member Name */}
+                                <div className="shadow-lg border-0 bg-light">
+                                    <EditText
+                                        value={teamMemberName}
+                                        className="h4 mb-0 text-center fw-bold"
+                                        inputClassName="text-center"
+                                        onChange={(e) => setTeamMemberName(e.target.value)}
+                                        onSave={updateTeamMemberName}
+                                        showEditButton
+                                    />
+                                </div>
+
+                                {/* Nurmon Image */}
                                 {teamMemberData?.nurmon.image_path && (
-                                    <div className="d-flex justify-content-center mb-3 card align-content-center w-100">
-                                        <img src={`${global_vars.UPLOADS_URL}/nurmon/${teamMemberData.nurmon.image_path}?t=${new Date().getTime()}`} 
-                                        alt={teamMemberName} className="img-fluid w-100" style={{ width: "250px"  }} />
+                                    <div className="card shadow-sm border-0 p-3 mb-3 text-center">
+                                        <div className="position-relative" style={{ width: "100%", maxWidth: "250px", margin: "0 auto" }}>
+                                            <img
+                                                src={`${global_vars.UPLOADS_URL}/nurmon/${teamMemberData.nurmon.image_path}?t=${new Date().getTime()}`}
+                                                alt={teamMemberName}
+                                                className="img-fluid rounded-3"
+                                                style={{
+                                                    width: "100%",
+                                                    height: "auto",
+                                                    objectFit: "cover",
+                                                    border: "3px solid #fff",
+                                                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 )}
-                                <div className="text-center">
-                                    <h4>Type: {teamMemberData?.nurmon.type?.name}</h4>
+
+                                {/* Type Badge */}
+                                <div className="card shadow-sm border-0 p-3 text-center">
+                                    <div className="d-flex justify-content-center align-items-center gap-2">
+                                        <span className="badge bg-primary fs-6 py-2 px-3 rounded-pill">
+                                            <i className="bi bi-tag-fill me-2"></i>
+                                            Type: {teamMemberData?.nurmon.type?.name || 'Unknown'}
+                                        </span>
+                                    </div>
                                 </div>
                             </Col>
+
                             <Col md={7}>
-                                <MemberItemAbilityComponent 
-                                    teamMemberId={teamMemberData?.id || 0}
-                                    teamId={teamMemberData?.team_id || 0}
-                                    nurmonId={teamMemberData?.nurmon_id || 0}
-                                    itemId={teamMemberData?.item_id || 0}
-                                    selectedAbilityId={teamMemberData?.selected_ability_id || 0} 
-                                />
+                                <div className="card shadow-sm border-0 h-100">
+                                    <div className="card-body">
+                                        <MemberItemAbilityComponent
+                                            teamMemberId={teamMemberData?.id || 0}
+                                            teamId={teamMemberData?.team_id || 0}
+                                            nurmonId={teamMemberData?.nurmon_id || 0}
+                                            itemId={teamMemberData?.item_id || 0}
+                                            selectedAbilityId={teamMemberData?.selected_ability_id || 0}
+                                        />
+                                    </div>
+                                </div>
                             </Col>
                         </Row>
                         <Row className="m-3">
@@ -172,8 +205,8 @@ const TeamMemberView = () => {
                         </Row>
                         <Row>
                             <Col>
-                                <MemberStatsComponent 
-                                    memberObject={teamMemberData as TeamMemberDataDTO}    
+                                <MemberStatsComponent
+                                    memberObject={teamMemberData as TeamMemberDataDTO}
                                     onChange={() => fetchTeamMemberData()}
                                 />
                             </Col>
